@@ -1,0 +1,67 @@
+.owner-view {
+  background-color: rgba(0, 0, 0, 0.1);
+  height: 100%;
+  flex: 1;
+}
+
+.label-input-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.section-title {
+  font-weight: 600;
+  font-size: 1.2em;
+  padding: 1em;
+  background-color: rgba(0, 0, 0, 0.05);
+  width: 100%;
+}
+
+.register-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  padding: 1.5em;
+}
+
+.left-section {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  max-height: 100vh;
+  overflow: auto;
+}
+
+.register-button-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1em;
+}
+
+.register-button {
+  border: 0;
+  background-color: green;
+  border-radius: 3px;
+  padding: 0.3em 1em;
+  color: white;
+}
+
+.right-section {
+  max-height: 100vh;
+  overflow: auto;
+}
+
+.companies-row {
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  padding: 1em;
+}
+
+.companies-row:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.companies-row div {
+  flex: 1;
+}

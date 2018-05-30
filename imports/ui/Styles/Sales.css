@@ -1,0 +1,53 @@
+.sales-container {
+  width: 100%;
+  height: 92vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.sale-form {
+  padding: 1em;
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.sale-block {
+  margin-bottom: 1em;
+}
+
+.sale-block.product {
+  display: flex;
+}
+
+.sale-block.product .Select {
+  width: 100%;
+}
+
+.sell-button {
+  margin-top: 1em;
+  width: 100%;
+  background-color: green;
+  border: 0;
+  color: white;
+  border-radius: 3px;
+  padding: 0.2em 0;
+}
+
+.sell-button:hover {
+  background-color: #1dc11d;
+}
+
+.add-button {
+  display: flex;
+  align-items: center;
+}
+
+.add-button .sale-block {
+  width: 100%;
+}
+
+.add-button button {
+  margin-top: 0.8em;
+  height: 2.5em;
+}
