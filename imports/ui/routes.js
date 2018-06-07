@@ -19,7 +19,7 @@ const routes = (
     <Route name="produtos" path="/produtos" component={Produtos} />
     <Route
       name="CadastrarDono"
-      path="/cadastrar-dono"
+      path="/cadastro-dono"
       component={CadastroDono}
     />
   </div>

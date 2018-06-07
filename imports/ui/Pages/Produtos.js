@@ -20,13 +20,22 @@ class CadastroDono extends Component {
       description: this.state.description,
       companyId: Meteor.user().companyId
     };
+    if (!product.name || !this.state.price) {
+      Bert.alert("Campos invalidos encontrados, verifique os dados!", "danger");
+      return;
+    }
     Meteor.call("insertProduct", product, (err, productId) => {
       if (err) {
-        console.log(err);
+        Bert.alert("Erro ao cadastrar produto!", "warning");
         return;
       }
-      console.log(productId);
-      this.setState({ showModal: false });
+      Bert.alert("Produto cadastrado com sucesso!", "success");
+      this.setState({
+        showModal: false,
+        name: null,
+        price: null,
+        description: null
+      });
     });
   }
 

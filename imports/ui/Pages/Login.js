@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
 import { FormControl, ControlLabel } from "react-bootstrap";
+import { Bert } from "meteor/themeteorchef:bert";
 import { Accounts } from "meteor/accounts-base";
 import "../Styles/Login";
 import { Mongo } from "meteor/mongo";
@@ -30,9 +31,10 @@ class Login extends Component {
       this.state.password,
       (error, result) => {
         if (error) {
-          console.log(error);
+          Bert.alert("Login ou senha invalidos", "warning");
         } else {
           const user = Meteor.user();
+          Bert.alert(`Bem vindo ${user.username}`, "success");
           if (user.type === "admin") {
             window.location.pathname = "/cadastro-dono";
           } else if (user.type === "caixa") {
@@ -60,6 +62,7 @@ class Login extends Component {
           <div className="input-row">
             <ControlLabel>Senha</ControlLabel>
             <FormControl
+              type="password"
               onChange={this.onPasswordChange}
               value={this.state.password}
             />

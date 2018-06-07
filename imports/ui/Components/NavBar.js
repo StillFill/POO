@@ -26,18 +26,26 @@ class NavBar extends Component {
     }
     return (
       <div className="navbar-container">
-        <div className="system-logo">Sistema Astec</div>
-        {Meteor.user().type !== "caixa" ? (
+        {Meteor.user().type !== "admin" ? (
+          <div className="system-logo">Sistema Astec</div>
+        ) : (
+          ""
+        )}
+        {Meteor.user().type !== "caixa" && Meteor.user().type !== "admin" ? (
           <div onClick={() => this.sendTo("/relatorio")}>Relatório</div>
         ) : (
           ""
         )}
-        {Meteor.user().type !== "caixa" ? (
+        {Meteor.user().type !== "caixa" && Meteor.user().type !== "admin" ? (
           <div onClick={() => this.sendTo("/produtos")}>Produtos</div>
         ) : (
           ""
         )}
-        <div onClick={() => this.sendTo("/vendas")}>Vendas</div>
+        {Meteor.user().type !== "admin" ? (
+          <div onClick={() => this.sendTo("/vendas")}>Vendas</div>
+        ) : (
+          ""
+        )}
         <button onClick={this.logout} className="logout-button">
           Sair <i className="fa fa-caret-right" />
         </button>

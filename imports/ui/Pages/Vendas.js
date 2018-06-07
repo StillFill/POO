@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
+import { Bert } from "meteor/themeteorchef:bert";
 import { FormControl, ControlLabel, Row, Col } from "react-bootstrap";
 import Select from "react-select";
 import "../Styles/Sales";
@@ -38,13 +39,26 @@ class Vendas extends Component {
       total: this.getTotal(),
       created_at: new Date()
     };
+    if (
+      !sale.client_name ||
+      sale.client_name === "" ||
+      !sale.payment_method ||
+      !sale.total
+    ) {
+      Bert.alert("Campos invalidos encontrados, verifique os dados!", "danger");
+      return;
+    }
     Meteor.call("insertSale", sale, (err, saleId) => {
       if (err) {
-        console.log(err);
+        Bert.alert("Erro ao tentar efetuar a venda", "danger");
         return;
       }
-      console.log(saleId);
-      this.setState({});
+      Bert.alert("Venda efetuada com sucesso!", "success");
+      this.setState({
+        clientName: "",
+        paymentMethod: null,
+        products: [{ productId: null }]
+      });
     });
   }
 
@@ -69,7 +83,7 @@ class Vendas extends Component {
     }
   }
   render() {
-    console.log(this.state.products);
+    console.log(this.state);
     return (
       <div className="sales-container">
         <div className="sale-form">
