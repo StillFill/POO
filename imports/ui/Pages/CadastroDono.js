@@ -156,6 +156,7 @@ class CadastroDono extends Component {
                 <Col xs={12} md={6}>
                   <ControlLabel>CPF</ControlLabel>
                   <FormControl
+                    id="cpf"
                     onChange={a => this.handleChangeOnwerInfo(a, "cpf")}
                     value={this.state.cpf}
                   />
@@ -184,6 +185,7 @@ class CadastroDono extends Component {
                 <Col xs={12} md={6}>
                   <ControlLabel>CNPJ</ControlLabel>
                   <FormControl
+                    id="cnpj"
                     onChange={a => this.handleChangeCompanyInfo(a, "cnpj")}
                     value={this.state.cnpj}
                   />
@@ -299,7 +301,7 @@ class CadastroDono extends Component {
         </Col>
         <Col xs={12} md={6} className="right-section">
           <Row>
-            <div className="section-title">Lista dos salões</div>
+            <div className="section-title">Lista dos estabelecimentos</div>
             <div className="list-content">
               {this.props.companies.map(company => (
                 <div key={company._id} className="companies-row">
