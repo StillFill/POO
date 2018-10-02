@@ -1,0 +1,98 @@
+.form-control #className input {
+  height: 10em;
+}
+
+.include-list {
+  display: flex;
+  align-items: center;
+  margin-top: 1em;
+  margin-left: 1em;
+}
+
+.include-list i {
+  margin-right: 1em;
+}
+
+.icon-select-container {
+  width: 4em;
+}
+
+.add-include-button {
+  margin-top: 1em;
+  width: 100%;
+  background-color: transparent;
+  border: 1px solid green;
+}
+
+.add-include-button:hover {
+  background-color: green;
+  color: white;
+}
+
+.register-class-button {
+  background-color: green;
+  color: white;
+  width: 100%;
+  border: 0;
+  font-size: 2em;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.form-container {
+  height: 70%;
+}
+
+.form-container textarea {
+  height: 100% !important;
+}
+
+.description {
+  height: 100%;
+}
+
+.left-bar {
+  background-color: grey;
+  color: white;
+  width: 30px;
+  font-size: 2.5em;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 5px;
+  transition: 300ms;
+  align-items: center;
+  cursor: pointer;
+  overflow: auto;
+}
+
+.left-bar .fake-image {
+  font-size: 0.5em;
+  height: auto;
+  margin-left: 0.7em;
+  width: 100%;
+}
+
+.remove-button {
+  background-color: transparent;
+  color: red;
+  border: 1px solid red;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.remove-button i {
+  margin: 0;
+}
+
+.remove-button:hover {
+  background-color: red;
+  color: white;
+}
+
+.include-row-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}

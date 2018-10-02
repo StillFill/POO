@@ -3,24 +3,26 @@ import { render } from "react-dom";
 import { createBrowserHistory } from "history";
 import { Router, Route, IndexRoute } from "react-router";
 import { Tracker } from "meteor/tracker";
-import Login from "./Pages/Login";
-import Vendas from "./Containers/Vendas";
-import CadastroDono from "./Containers/CadastroDono";
 import NavBar from "./Components/NavBar";
-import Produtos from "./Containers/Produtos";
-import Relatorio from "./Containers/Relatorio";
+import Home from "./Containers/Home";
+import UserClasses from "./Containers/UserClasses";
+import RegisterClass from "./Containers/RegisterClass";
+import Search from "./Pages/Search";
+import Cart from "./Containers/Cart";
 
 const routes = (
-  <div>
+  <div style={{ height: "100vh" }}>
     <NavBar history={createBrowserHistory()} />
-    <Route name="login" path="/login" component={Login} />
-    <Route name="vendas" path="/vendas" component={Vendas} />
-    <Route name="relatorio" path="/relatorio" component={Relatorio} />
-    <Route name="produtos" path="/produtos" component={Produtos} />
+    <Route name="Home" path="/home" component={Home} />
+    <Route name="Pesquisa" path="/pesquisa" component={Search}>
+      <Route name="Pesquisa" path="/pesquisa/:searchParam" component={Home} />
+    </Route>
+    <Route name="Minha conta" path="/meus-cursos" component={UserClasses} />
+    <Route name="Carrinho" path="/carrinho" component={Cart} />
     <Route
-      name="CadastrarDono"
-      path="/cadastro-dono"
-      component={CadastroDono}
+      name="Registrar curso"
+      path="/registrar-curso"
+      component={RegisterClass}
     />
   </div>
 );

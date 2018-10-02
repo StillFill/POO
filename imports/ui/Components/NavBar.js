@@ -1,54 +1,169 @@
 import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import "../Styles/NavBar";
+import "../Styles/NavBar.css";
+import Modal from "./Common/Modal";
+import { FormControl, ControlLabel } from "react-bootstrap";
+import { doLogin } from "../../modules/student-helpers";
+import UserOptions from "../Components/UserOptions";
+import { browserHistory } from "react-router";
 
 class NavBar extends Component {
   constructor(props) {
     super(props);
     this.state = {};
     this.logout = this.logout.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.formatAndSendSearchParam = this.formatAndSendSearchParam.bind(this);
   }
 
   logout() {
-    Meteor.logout(() => (window.location.pathname = "/login"));
+    Meteor.logout();
   }
 
   sendTo(route) {
     window.location.pathname = route;
   }
 
-  render() {
-    console.log(Meteor.user());
-    if (window.location.pathname === "/login" || !Meteor.user()) {
-      return <div />;
+  async handleSubmit() {
+    const { name, email, password, showRegisterModal, login } = this.state;
+    if (showRegisterModal) {
+      Meteor.call(
+        "createNewUser",
+        {
+          name,
+          email,
+          password,
+          type: "student"
+        },
+        err => {
+          if (err) console.log(err);
+          else {
+            doLogin({ login: email, password });
+            this.setState({ showRegisterModal: false });
+          }
+        }
+      );
+    } else {
+      doLogin({ login, password }, err => {
+        if (!err) this.setState({ showLoginModal: false });
+        else window.location.pathname = "/home";
+      });
     }
+  }
+
+  handleInputChange({ target: { value, name } }) {
+    this.setState({ [name]: value });
+  }
+
+  formatAndSendSearchParam({ key }) {
+    if (key !== "Enter") {
+      // 13 === enter
+      return;
+    }
+    const searchParam = this.state.searchParam;
+    const formattedParam = searchParam.replace(" ", "-");
+    window.location.pathname = `/pesquisa/${formattedParam}`;
+  }
+
+  render() {
+    const user = Meteor.user();
     return (
       <div className="navbar-container">
-        {Meteor.user().type !== "admin" ? (
-          <div className="system-logo">Sistema Astec</div>
+        <h2 style={{ cursor: "pointer" }} onClick={() => this.sendTo("/home")}>
+          Aquamarine
+        </h2>
+        <FormControl
+          placeholder="Pesquise cursos aqui..."
+          onChange={e => this.setState({ searchParam: e.target.value })}
+          value={this.state.searchParam}
+          onKeyPress={this.formatAndSendSearchParam}
+        />
+        {user ? (
+          <UserOptions />
         ) : (
-          ""
+          <div className="user-buttons">
+            <button
+              className="login-button"
+              onClick={() => this.setState({ showLoginModal: true })}
+            >
+              Login
+            </button>
+            <button
+              className="register-button"
+              onClick={() => this.setState({ showRegisterModal: true })}
+            >
+              Cadastrar-se
+            </button>
+          </div>
         )}
-        {Meteor.user().type !== "caixa" && Meteor.user().type !== "admin" ? (
-          <div onClick={() => this.sendTo("/relatorio")}>Relatório</div>
-        ) : (
-          ""
-        )}
-        {Meteor.user().type !== "caixa" && Meteor.user().type !== "admin" ? (
-          <div onClick={() => this.sendTo("/produtos")}>Produtos</div>
-        ) : (
-          ""
-        )}
-        {Meteor.user().type !== "admin" ? (
-          <div onClick={() => this.sendTo("/vendas")}>Vendas</div>
-        ) : (
-          ""
-        )}
-        <button onClick={this.logout} className="logout-button">
-          Sair <i className="fa fa-caret-right" />
-        </button>
+        <Modal
+          confirmationCallback={this.handleSubmit}
+          title="Login"
+          showModal={this.state.showLoginModal}
+          confirmationButtonTitle="Logar"
+          closeModal={() => this.setState({ showLoginModal: false })}
+        >
+          <div style={{ marginTop: "0.5em" }}>
+            <ControlLabel>Login</ControlLabel>
+            <FormControl
+              value={this.state.login}
+              onChange={this.handleInputChange}
+              name="login"
+            />
+          </div>
+          <div style={{ marginTop: "0.5em" }}>
+            <ControlLabel>Senha</ControlLabel>
+            <FormControl
+              value={this.state.password}
+              type="password"
+              onChange={this.handleInputChange}
+              name="password"
+            />
+          </div>
+        </Modal>
+        <Modal
+          confirmationCallback={this.handleSubmit}
+          title={"Cadastrar-se"}
+          showModal={this.state.showRegisterModal}
+          closeModal={() => this.setState({ showRegisterModal: false })}
+        >
+          <div style={{ marginTop: "0.5em" }}>
+            <ControlLabel>Nome</ControlLabel>
+            <FormControl
+              value={this.state.name}
+              onChange={this.handleInputChange}
+              name="name"
+            />
+          </div>
+          <div style={{ marginTop: "0.5em" }}>
+            <ControlLabel>Email</ControlLabel>
+            <FormControl
+              value={this.state.email}
+              onChange={this.handleInputChange}
+              name="email"
+            />
+          </div>
+          <div style={{ marginTop: "0.5em" }}>
+            <ControlLabel>Senha</ControlLabel>
+            <FormControl
+              value={this.state.password}
+              type="password"
+              onChange={this.handleInputChange}
+              name="password"
+            />
+          </div>
+          <div style={{ marginTop: "0.5em" }}>
+            <ControlLabel>Confirmar Senha</ControlLabel>
+            <FormControl
+              value={this.state.password_confirmation}
+              type="password"
+              onChange={this.handleInputChange}
+              name="password_confirmation"
+            />
+          </div>
+        </Modal>
       </div>
     );
   }
