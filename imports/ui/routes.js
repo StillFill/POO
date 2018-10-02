@@ -9,6 +9,7 @@ import UserClasses from "./Containers/UserClasses";
 import RegisterClass from "./Containers/RegisterClass";
 import Search from "./Pages/Search";
 import Cart from "./Containers/Cart";
+import Reports from "./Containers/Reports";
 
 const routes = (
   <div style={{ height: "100vh" }}>
@@ -19,6 +20,7 @@ const routes = (
     </Route>
     <Route name="Minha conta" path="/meus-cursos" component={UserClasses} />
     <Route name="Carrinho" path="/carrinho" component={Cart} />
+    <Route name="Relatório" path="/relatorio" component={Reports} />
     <Route
       name="Registrar curso"
       path="/registrar-curso"

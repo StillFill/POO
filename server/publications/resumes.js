@@ -15,7 +15,11 @@ if (Meteor.isServer) {
   });
 
   Meteor.publish("getAllClasses", function() {
-    return Classes.find();
+    return Classes.find({ is_active: true });
+  });
+
+  Meteor.publish("getAllPaidCarts", function(user_id) {
+    return Carts.find({ status: "paid" });
   });
 
   Meteor.publish(null, function() {

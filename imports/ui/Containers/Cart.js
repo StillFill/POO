@@ -8,9 +8,17 @@ const dataLoader = (props, onData) => {
   if (user) {
     if (Meteor.subscribe("getUserCurrentCart", user._id).ready()) {
       const currentCart = Carts.findOne();
-      Meteor.call("getClassesFromCart", currentCart.classes, (err, classes) => {
-        onData(null, { currentCart, classes });
-      });
+      if (currentCart) {
+        Meteor.call(
+          "getClassesFromCart",
+          currentCart.classes,
+          (err, classes) => {
+            onData(null, { currentCart, classes });
+          }
+        );
+      } else {
+        onData(null, { currentCart: null, classes: [] });
+      }
     }
   }
 };

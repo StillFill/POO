@@ -10,6 +10,11 @@ const userOptions = [
     icon: "fa fa-book",
     action: () => sendTo("/meus-cursos")
   },
+  {
+    label: "Carrinho",
+    icon: "fa fa-cart-plus",
+    action: () => sendTo("/carrinho")
+  },
   { label: "Sair", icon: "fa fa-sign-out-alt", action: Meteor.logout }
 ];
 

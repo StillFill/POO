@@ -8,7 +8,7 @@ import NavBar from "../Components/NavBar";
 import Modal from "../Components/Common/Modal";
 import SelectedClassPage from "../Components/Common/SelectedClassPage";
 import ClassCard from "../Components/Common/ClassCard";
-
+import { Grid, Row, Col } from "react-bootstrap";
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -43,12 +43,9 @@ class Home extends Component {
     const user = Meteor.user();
     const { selectedClass } = this.state;
     return (
-      <div className="home-container">
-        <div
-          className="product-list"
-          style={this.state.selectedClass ? { width: "30vw" } : {}}
-        >
-          <div className="product-row">
+      <Grid fluid style={{ margin: "1%" }}>
+        <Row style={{ width: "100%" }}>
+          <Col md={4} sm={6} xs={12}>
             {this.props.classes.map(clas => (
               <ClassCard
                 key={clas._id}
@@ -56,8 +53,8 @@ class Home extends Component {
                 onClick={() => this.setState({ selectedClass: clas })}
               />
             ))}
-          </div>
-        </div>
+          </Col>
+        </Row>
         <Modal
           showModal={selectedClass}
           closeModal={() => this.setState({ selectedClass: null })}
@@ -69,7 +66,7 @@ class Home extends Component {
         >
           <SelectedClassPage selectedClass={selectedClass || {}} />
         </Modal>
-      </div>
+      </Grid>
     );
   }
 }

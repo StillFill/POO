@@ -13,8 +13,12 @@ class UserOptions extends Component {
   render() {
     let options = userOptions;
     const user = Meteor.user();
-    if (user.type === "admin") {
+    if (user && user.type === "admin") {
       options = adminOptions;
+    }
+    const isMobile = screen.width <= 768;
+    if (!user && isMobile) {
+      options = this.props.loginOptions;
     }
     return (
       <div className="user-options">
@@ -44,7 +48,9 @@ class UserOptions extends Component {
   }
 }
 
-UserOptions.propTypes = {};
+UserOptions.propTypes = {
+  loginOptions: PropTypes.array
+};
 
 UserOptions.defaultProps = {};
 

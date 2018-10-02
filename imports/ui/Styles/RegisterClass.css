@@ -96,3 +96,25 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.price-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 3em;
+  max-width: 300px;
+}
+
+.editing-header {
+  display: flex;
+  justify-content: space-between;
+  background-color: white;
+  padding: 10px;
+}
+
+.description-card {
+  height: 100%;
+}

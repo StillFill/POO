@@ -69,19 +69,38 @@ class NavBar extends Component {
 
   render() {
     const user = Meteor.user();
+    const isMobile = screen.width <= 768;
     return (
       <div className="navbar-container">
-        <h2 style={{ cursor: "pointer" }} onClick={() => this.sendTo("/home")}>
-          Aquamarine
-        </h2>
+        {!isMobile && (
+          <h2
+            style={{ cursor: "pointer" }}
+            onClick={() => this.sendTo("/home")}
+          >
+            Aquamarine
+          </h2>
+        )}
         <FormControl
           placeholder="Pesquise cursos aqui..."
           onChange={e => this.setState({ searchParam: e.target.value })}
           value={this.state.searchParam}
           onKeyPress={this.formatAndSendSearchParam}
         />
-        {user ? (
-          <UserOptions />
+        {user || isMobile ? (
+          <UserOptions
+            loginOptions={[
+              {
+                label: "Login",
+                icon: "fa fa-cog",
+                action: () => this.setState({ showLoginModal: true })
+              },
+              {
+                label: "Cadastrar",
+                icon: "fa fa-sign-out-alt",
+                action: () => this.setState({ showRegisterModal: true })
+              }
+            ]}
+          />
         ) : (
           <div className="user-buttons">
             <button

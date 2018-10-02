@@ -34,6 +34,7 @@ class RegisterClass extends Component {
     this.submitClass = this.submitClass.bind(this);
     this.showBar = this.showBar.bind(this);
     this.filterClasses = this.filterClasses.bind(this);
+    this.removeClass = this.removeClass.bind(this);
   }
 
   handleChangeForm({ target: { value, name, id } }) {
@@ -173,6 +174,13 @@ class RegisterClass extends Component {
     this.setState({ classes: newProps.classes });
   }
 
+  removeClass(_id) {
+    Meteor.call("removeClass", { _id }, err => {
+      if (err) console.log(err);
+      else this.setState({ class: null, isEditing: false });
+    });
+  }
+
   removeInclude(index) {
     const newClass = this.state.class;
     const include_list = this.state.class.include_list;
@@ -229,13 +237,20 @@ class RegisterClass extends Component {
         </div>
         <div className="selected-class-container">
           {this.state.isEditing && (
-            <i
-              className="fa fa-chevron-left"
-              style={{ fontSize: "1.5em", cursor: "pointer" }}
-              onClick={() =>
-                this.setState({ isEditing: false, class: this.defaultClass })
-              }
-            />
+            <div className="editing-header">
+              <i
+                className="fa fa-chevron-left"
+                style={{ fontSize: "1.5em", cursor: "pointer" }}
+                onClick={() =>
+                  this.setState({ isEditing: false, class: this.defaultClass })
+                }
+              />
+              <i
+                className="fa fa-times"
+                style={{ fontSize: "1.5em", cursor: "pointer" }}
+                onClick={() => this.removeClass(this.state.class._id)}
+              />
+            </div>
           )}
           <div className="product-principal-header">
             <div>
@@ -254,71 +269,14 @@ class RegisterClass extends Component {
               <span>Criado por</span>
               <span>{this.renderCondition("created_by", "1em")}</span>
             </div>
+            <div className="price-container">
+              R$ {this.renderCondition("price", "1em")}
+            </div>
           </div>
           <div className="middle-part">
             <div className="description-card">
               <div className="description">
                 {this.renderCondition("detailed_description", "1em")}
-              </div>
-            </div>
-            <div className="product-cart">
-              <div className="product-image" />
-              <div className="cart-description">
-                <div className="product-price">
-                  <span>R$</span>
-                  <span>{this.renderCondition("price", "1.5em")}</span>
-                  <span>,00</span>
-                </div>
-                <div className="add-cart">
-                  <button className="add-cart-button"> + Carrinho</button>
-                </div>
-                {this.state.class.include_list.map((include, index) => (
-                  <div className="include-list">
-                    {!include.icon ? (
-                      <div className="icon-select-container">
-                        <Select
-                          options={iconOptions}
-                          value={include.icon}
-                          onChange={a => this.setIcon(a.value, index)}
-                        />
-                      </div>
-                    ) : (
-                      <i
-                        className={include.icon}
-                        onDoubleClick={() => this.resetIcon(index)}
-                      />
-                    )}
-                    {include.label ? (
-                      <div className="include-row-container">
-                        <div onDoubleClick={() => this.resetLabel(index)}>
-                          {include.label}
-                        </div>
-                        <button
-                          className="remove-button"
-                          onClick={() => this.removeInclude(index)}
-                        >
-                          <i className="fa fa-times" />
-                        </button>
-                      </div>
-                    ) : (
-                      <FormControl
-                        onChange={e =>
-                          this.setState({ selectedLabel: e.target.value })
-                        }
-                        value={this.state.selectedLabel}
-                        onKeyDown={e =>
-                          this.setLabel(e, this.state.selectedLabel, index)
-                        }
-                      />
-                    )}
-                  </div>
-                ))}
-                <button
-                  className="add-include-button"
-                  onClick={this.addNewInclude}
-                >
-                  <i className="fa fa-plus" />
-                </button>
               </div>
             </div>
           </div>
