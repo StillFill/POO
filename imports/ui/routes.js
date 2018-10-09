@@ -2,6 +2,7 @@ import React from "react";
 import { render } from "react-dom";
 import { createBrowserHistory } from "history";
 import { Router, Route, IndexRoute } from "react-router";
+import Grid from "react-bootstrap/lib/Grid";
 import { Tracker } from "meteor/tracker";
 import NavBar from "./Components/NavBar";
 import Home from "./Containers/Home";
@@ -12,11 +13,11 @@ import Cart from "./Containers/Cart";
 import Reports from "./Containers/Reports";
 
 const routes = (
-  <div style={{ height: "100vh" }}>
+  <Grid fluid style={{ height: "100vh" }}>
     <NavBar history={createBrowserHistory()} />
     <Route name="Home" path="/home" component={Home} />
-    <Route name="Pesquisa" path="/pesquisa" component={Search}>
-      <Route name="Pesquisa" path="/pesquisa/:searchParam" component={Home} />
+    <Route name="Cursos" path="/cursos" component={Search}>
+      <Route name="Cursos" path="/cursos/:searchParam" component={Home} />
     </Route>
     <Route name="Minha conta" path="/meus-cursos" component={UserClasses} />
     <Route name="Carrinho" path="/carrinho" component={Cart} />
@@ -26,7 +27,7 @@ const routes = (
       path="/registrar-curso"
       component={RegisterClass}
     />
-  </div>
+  </Grid>
 );
 
 Meteor.startup(() => {

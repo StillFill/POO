@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "../Styles/Home";
 import "../Styles/Class";
 import NavBar from "../Components/NavBar";
-import HomeContainer from "../Containers/Home";
+import { SearchContainer } from "../Containers/Home";
 
 class Search extends Component {
   constructor(props) {
@@ -11,15 +11,11 @@ class Search extends Component {
     this.state = {};
   }
 
-  buyClass(classId) {
-    const user = Meteor.user();
-    Meteor.call("buyClass", { user_id: user._id, classId });
-  }
-
   render() {
+    console.log(window.location.pathname.split("/cursos/")[1]);
     return (
-      <HomeContainer
-        searchParam={this.props.location.pathname.split("/pesquisa/")[1]}
+      <SearchContainer
+        searchParam={window.location.pathname.split("/cursos/")[1]}
       />
     );
   }

@@ -10,10 +10,11 @@ class ClassCard extends Component {
 
   render() {
     const { cardClass, onClick, onRemove, removeIcon, key } = this.props;
-    const { name, description } = cardClass;
+    const { name, description, created_by, price } = cardClass;
+    console.log(cardClass);
     return (
       <div
-        className="fake-image"
+        className="class-card"
         style={onClick ? { cursor: "pointer" } : { cursor: "default" }}
         onClick={onClick}
         key={key}
@@ -27,8 +28,18 @@ class ClassCard extends Component {
             }}
           />
         )}
-        <div className="product-label">{name}</div>
-        <div className="product-description">{description}</div>
+        <div className="fake-image">
+          <img src="https://www.northeastern.edu/graduate/blog/wp-content/uploads/2016/08/Online-Learning-Hero-1.jpg" />
+        </div>
+        <div className="class-card-body">
+          <div className="product-label">{name}</div>
+          <div className="product-description">{description}</div>
+          <div className="product-created-by">{created_by}</div>
+          <div className="product-price">
+            R$
+            {price}
+          </div>
+        </div>
       </div>
     );
   }

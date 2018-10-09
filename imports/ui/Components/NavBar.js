@@ -15,7 +15,6 @@ class NavBar extends Component {
     this.logout = this.logout.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.formatAndSendSearchParam = this.formatAndSendSearchParam.bind(this);
   }
 
   logout() {
@@ -57,16 +56,6 @@ class NavBar extends Component {
     this.setState({ [name]: value });
   }
 
-  formatAndSendSearchParam({ key }) {
-    if (key !== "Enter") {
-      // 13 === enter
-      return;
-    }
-    const searchParam = this.state.searchParam;
-    const formattedParam = searchParam.replace(" ", "-");
-    window.location.pathname = `/pesquisa/${formattedParam}`;
-  }
-
   render() {
     const user = Meteor.user();
     const isMobile = screen.width <= 768;
@@ -80,12 +69,6 @@ class NavBar extends Component {
             Aquamarine
           </h2>
         )}
-        <FormControl
-          placeholder="Pesquise cursos aqui..."
-          onChange={e => this.setState({ searchParam: e.target.value })}
-          value={this.state.searchParam}
-          onKeyPress={this.formatAndSendSearchParam}
-        />
         {user || isMobile ? (
           <UserOptions
             loginOptions={[

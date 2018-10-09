@@ -3,70 +3,59 @@ import PropTypes from "prop-types";
 import { Bert } from "meteor/themeteorchef:bert";
 import { Meteor } from "meteor/meteor";
 import "../Styles/Home";
-import "../Styles/Class";
-import NavBar from "../Components/NavBar";
-import Modal from "../Components/Common/Modal";
-import SelectedClassPage from "../Components/Common/SelectedClassPage";
-import ClassCard from "../Components/Common/ClassCard";
-import { Grid, Row, Col } from "react-bootstrap";
+import { Row, Col, Image, FormControl } from "react-bootstrap";
+
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.searchClass = this.searchClass.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  buyClass(classId) {
-    const user = Meteor.user();
-    Meteor.call("addToCart", { user_id: user._id, classId }, err => {
-      if (err) {
-        Bert.alert(
-          "Não foi possivel adicionar ao carrinho, tente novamente mais tarde!",
-          "warning"
-        );
-      } else {
-        Bert.alert("Curso adicionado com sucesso ao carrinho", "success");
-        setTimeout(() => {
-          window.location.pathname = "carrinho";
-        }, 1000);
-      }
-    });
+  formatClassesToOptions() {
+    const { classes } = this.props;
+    return classes.map(cl => ({ label: cl.name, value: cl._id }));
+  }
+
+  searchClass() {
+    window.location.pathname = `/cursos/${this.state.className}`;
+  }
+
+  handleChange(e) {
+    this.setState({ className: e.target.value });
   }
 
   render() {
-    if (this.props.classes.length === 0) {
-      return (
-        <div className="grid-container">
-          <h1>NENHUM CURSO ENCONTRADO!</h1>
-        </div>
-      );
-    }
-    const user = Meteor.user();
-    const { selectedClass } = this.state;
     return (
-      <Grid fluid style={{ margin: "1%" }}>
-        <Row style={{ width: "100%" }}>
-          <Col md={4} sm={6} xs={12}>
-            {this.props.classes.map(clas => (
-              <ClassCard
-                key={clas._id}
-                cardClass={clas}
-                onClick={() => this.setState({ selectedClass: clas })}
-              />
-            ))}
-          </Col>
-        </Row>
-        <Modal
-          showModal={selectedClass}
-          closeModal={() => this.setState({ selectedClass: null })}
-          confirmationCallback={() => this.buyClass(selectedClass._id)}
-          confirmationButtonTitle="Adicionar ao carrinho"
-          disabledButton={!user}
-          disabledReason="Efetue login para adicionar ao carrinho!"
-          full
-        >
-          <SelectedClassPage selectedClass={selectedClass || {}} />
-        </Modal>
-      </Grid>
+      <Row>
+        <Col style={{ padding: 0 }} md={12} xs={12} sm={12} responsive>
+          <div className="header-banner-title">
+            <h1>Encontre os melhores cursos aqui!</h1>
+            <div className="banner-form-button-shadow">
+              <div className="banner-form-button">
+                <FormControl
+                  searchable
+                  style={{
+                    borderRadius: "5px 0 0 5px",
+                    height: "40px"
+                  }}
+                  onChange={this.handleChange}
+                  placeholder="Ache o curso que deseja"
+                />
+                <button onClick={this.searchClass} className="search-button">
+                  <i className="fa fa-search" />
+                </button>
+              </div>
+            </div>
+          </div>
+          <img
+            className="principal-banner"
+            style={{ width: "100%" }}
+            src="https://sindiconet-files.s3.amazonaws.com/Cursos/Curso/estrategias-de-vendas-para-sindicos-profissionais/HeroBanner/heroBanner.jpg?rn=320930"
+          />
+        </Col>
+      </Row>
     );
   }
 }
