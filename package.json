@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "bcrypt": "^2.0.1",
+    "card-validator": "^6.0.0",
     "cep-promise": "^3.0.0",
     "cpf_cnpj": "^0.2.0",
     "jquery": "^3.3.1",
@@ -20,6 +21,7 @@
     "react": "^16.3.2",
     "react-addons-pure-render-mixin": "^15.2.1",
     "react-bootstrap": "^0.32.1",
+    "react-credit-cards": "^0.7.0",
     "react-dom": "^16.3.2",
     "react-event-listener": "^0.5.3",
     "react-komposer": "^2.0.0",

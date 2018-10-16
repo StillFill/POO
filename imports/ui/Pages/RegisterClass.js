@@ -143,7 +143,6 @@ class RegisterClass extends Component {
     const newClass = this.state.class;
     let method = "insertClass";
     if (this.state.isEditing) method = "updateClass";
-    console.log(newClass);
     Meteor.call(method, newClass, (err, classId) => {
       if (err) console.log(err);
       else

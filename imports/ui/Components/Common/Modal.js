@@ -15,10 +15,11 @@ class NavBar extends Component {
       confirmationButtonTitle,
       full,
       disabledButton,
-      disabledReason
+      disabledReason,
+      id
     } = this.props;
     return (
-      <Modal show={showModal} onHide={closeModal}>
+      <Modal id={id} show={showModal} onHide={closeModal}>
         {title && (
           <Modal.Title>
             <h2 style={{ padding: "0 0.5em" }}>{title}</h2>
@@ -57,6 +58,7 @@ NavBar.propTypes = {
   showModal: PropTypes.bool,
   children: PropTypes.node,
   title: PropTypes.string,
+  id: PropTypes.string,
   closeModal: PropTypes.func,
   confirmationCallback: PropTypes.func,
   confirmationButtonTitle: PropTypes,

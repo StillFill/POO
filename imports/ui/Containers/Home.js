@@ -4,16 +4,9 @@ import Home from "../Pages/Home";
 import Search from "../Components/Search";
 
 const dataLoader = (props, onData) => {
-  const user = Meteor.user();
-  let methodToCall = "getAllClasses";
-  let params = {};
-  if (props.searchParam) {
-    methodToCall = "getClassesByName";
-    params = props.searchParam.replace("-", " ");
-  }
-  console.log(props);
-  Meteor.call(methodToCall, params, (err, classes) => {
+  Meteor.call("getAllClasses", (err, classes) => {
     onData(null, {
+      ...props,
       classes
     });
   });

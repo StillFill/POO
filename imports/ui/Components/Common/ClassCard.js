@@ -11,7 +11,6 @@ class ClassCard extends Component {
   render() {
     const { cardClass, onClick, onRemove, removeIcon, key } = this.props;
     const { name, description, created_by, price } = cardClass;
-    console.log(cardClass);
     return (
       <div
         className="class-card"

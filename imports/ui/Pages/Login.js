@@ -48,7 +48,6 @@ class Login extends Component {
   }
 
   render() {
-    console.log(Meteor.user());
     return (
       <div className="login-container">
         <div className="inputs-container">

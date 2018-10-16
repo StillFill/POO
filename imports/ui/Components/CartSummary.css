@@ -1,46 +1,99 @@
-.cart-summary {
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  margin: 15px;
-  width: 100%;
+.opacity {
+  opacity: 0.7;
 }
 
-.cart-summary-title {
-  padding: 10px;
+.remove-class {
+  font-size: 1.2em;
+  cursor: pointer;
 }
 
-.cart-summary-total {
-  font-weight: 700;
+.cart-table-row {
+  display: flex;
+  /* height: 150px; */
+  margin-top: 15px;
   background-color: rgba(0, 0, 0, 0.05);
-  padding: 10px;
-  margin-bottom: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.pay-button {
-  background-color: green;
-  margin: 15px 0;
+.cart-item-image {
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 15px;
+}
+
+.cart-item-image img {
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.15);
+}
+
+.cart-item-name {
+  flex: 2;
+  display: flex;
+  padding: 15px;
+  height: 100%;
+}
+
+.cart-item-name-description {
+  width: 100%;
+  word-wrap: break-word;
+}
+
+.cart-item-price {
+  flex: 2;
+  text-align: right;
+  height: 100%;
+  padding: 15px;
+  padding-top: 5px;
+  font-size: 1.5em;
+  font-weight: 700;
+}
+
+.discount-group {
+  padding: 15px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.05);
+  display: flex;
+  margin-top: 15px;
+}
+
+.discount-group span {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+}
+
+.discount-group input {
+  width: 30%;
+}
+
+.final-cart-total {
+  text-align: right;
+}
+
+.pay-cart {
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pay-cart-button {
+  background-color: #6f8daa;
   color: white;
   border: 0;
-  font-size: 2em;
-  width: 70%;
-  padding: 5px 0;
-  border-radius: 5px;
-  transition: 150ms;
+  padding: 10px 20px;
+  font-size: 1.2em;
+  font-weight: 700;
+  border-radius: 3px;
 }
 
-.pay-button:hover {
-  box-shadow: 7px 7px 10px rgba(0, 0, 0, 0.3);
-}
-
-.cart-right-side {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.no-data-message {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 80%;
+.pay-cart-button:hover {
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
 }

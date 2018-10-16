@@ -37,9 +37,7 @@ if (Meteor.isServer) {
       }).fetch();
     },
     getUserClassesIds(_id) {
-      console.log(_id);
       const user = Meteor.users.findOne({ _id });
-      console.log(user);
       if (user && user.classesIds) {
         return Classes.find({
           _id: { $in: user.classesIds },

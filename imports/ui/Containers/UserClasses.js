@@ -4,7 +4,6 @@ import Produtos from "../Pages/UserClasses";
 
 const dataLoader = (props, onData) => {
   const user = Meteor.user();
-  console.log(user);
   if (!user) {
     return onData(null, { userClasses: [] });
   }

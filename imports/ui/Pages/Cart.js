@@ -4,37 +4,19 @@ import "../Styles/Home";
 import "../Styles/Class";
 import Table from "../Components/Common/Table";
 import CartSummary from "../Components/CartSummary";
-import { Grid, Row, Col } from "react-bootstrap";
+import { Grid, Row, Col, FormControl, ControlLabel } from "react-bootstrap";
 import { Meteor } from "meteor/meteor";
 import Modal from "../Components/Common/Modal";
 import SelectedClassPage from "../Components/Common/SelectedClassPage";
+import Cards from "react-credit-cards";
+
 class Cart extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      cardData: {}
+    };
     this.payCart = this.payCart.bind(this);
-  }
-
-  removeFromCart(classId) {
-    console.log(classId);
-    const { currentCart } = this.props;
-    Meteor.call(
-      "removeClassFromCart",
-      { classId, cartId: currentCart._id },
-      err => {
-        if (err) console.log(err);
-      }
-    );
-  }
-
-  formatHeaderData() {
-    return [
-      { label: "Curso", value: "name" },
-      { label: "Descrição", value: "description" },
-      { label: "Criado por", value: "created_by" },
-      { label: "Preço(R$)", value: "price" },
-      { label: "", value: "removeButton", style: { textAlign: "center" } }
-    ];
   }
 
   removeClassFromCart(c) {
@@ -49,22 +31,6 @@ class Cart extends Component {
         console.log(err);
       }
     );
-  }
-
-  formatClasses() {
-    const { classes } = this.props;
-    const formattedClasses = classes;
-    return formattedClasses.map(cl => ({
-      ...cl,
-      removeButton: (
-        <button
-          onClick={() => this.removeClassFromCart(cl)}
-          className="remove-button"
-        >
-          <i className="fa fa-times" />
-        </button>
-      )
-    }));
   }
 
   getTotal() {
@@ -90,42 +56,100 @@ class Cart extends Component {
       );
     }
     const total = this.getTotal();
+    const { cardNumber, ownerName, cardExpiry, cardCvc, focused } = this.state;
     return (
       <Grid fluid>
         <Row>
-          <Col md={8}>
-            <Table
-              tableHeaders={this.formatHeaderData()}
-              tableData={this.formatClasses()}
-              onRowClick={cl => this.setState({ selectedClass: cl })}
-            />
-          </Col>
-          <Col md={4}>
-            <div className="cart-right-side">
-              <CartSummary classes={classes} total={total} />
-              <button
-                className="pay-button"
-                onClick={() => this.setState({ showPaymentConfirmation: true })}
-              >
-                Pagar
-              </button>
+          <h2>CARRINHO</h2>
+        </Row>
+        <Row style={{ marginTop: "30px" }}>
+          <a
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              window.location.pathname = "/cursos";
+            }}
+          >
+            <i className="fa fa-arrow-left" /> Continuar comprando
+          </a>
+        </Row>
+        <Row>
+          {classes.map(cl => (
+            <div className="cart-table-row">
+              <div className="cart-item-image">
+                <img src="https://www.northeastern.edu/graduate/blog/wp-content/uploads/2016/08/Online-Learning-Hero-1.jpg" />
+              </div>
+              <div className="cart-item-name">
+                <div className="cart-item-name-description">
+                  <h4>{cl.name}</h4>
+                  <p className="opacity">{cl.description}</p>
+                  <p>Criado por {cl.created_by}</p>
+                  <a
+                    className="remove-class"
+                    onClick={() => this.removeClassFromCart(cl)}
+                  >
+                    REMOVER
+                  </a>
+                </div>
+              </div>
+              <p className="cart-item-price">R$ {cl.price}</p>
             </div>
-          </Col>
+          ))}
+        </Row>
+        <Row>
+          <div className="discount-group">
+            <span>Cupom de desconto</span>
+            <FormControl
+              onChange={this.handleChangeDiscountKey}
+              value={this.state.discountKey}
+            />
+          </div>
+        </Row>
+        <Row>
+          <h3 className="final-cart-total">TOTAL: R$ {this.getTotal()}</h3>
+        </Row>
+        <Row>
+          <div className="pay-cart">
+            <button
+              className="pay-cart-button"
+              onClick={() => this.setState({ isPayingCart: true })}
+            >
+              Finalizar compra
+            </button>
+          </div>
         </Row>
         <Modal
-          full
-          showModal={this.state.selectedClass}
-          closeModal={() => this.setState({ selectedClass: null })}
+          showModal={this.state.isPayingCart}
+          closeModal={() => this.setState({ isPayingCart: false })}
         >
-          <SelectedClassPage selectedClass={this.state.selectedClass || {}} />
-        </Modal>
-        <Modal
-          showModal={this.state.showPaymentConfirmation}
-          closeModal={() => this.setState({ showPaymentConfirmation: false })}
-          confirmationCallback={this.payCart}
-          confirmationButtonTitle="Sim"
-        >
-          Tem certeza que deseja pagar?
+          <Row>
+            <Col md={6}>
+              <Cards
+                number={cardNumber || ""}
+                name={ownerName || ""}
+                expiry={cardExpiry || ""}
+                cvc={cardCvc || ""}
+                focused={focused || ""}
+              />
+            </Col>
+            <Col md={6}>
+              <ControlLabel>Nome no cartão</ControlLabel>
+              <FormControl
+                onChange={e => this.setState({ ownerName: e.target.value })}
+              />
+              <ControlLabel>Número do cartão</ControlLabel>
+              <FormControl
+                onChange={e => this.setState({ cardNumber: e.target.value })}
+              />
+              <ControlLabel>Expira em</ControlLabel>
+              <FormControl
+                onChange={e => this.setState({ expiry: e.target.value })}
+              />
+              <ControlLabel>Código de segurança</ControlLabel>
+              <FormControl
+                onChange={e => this.setState({ cardCvc: e.target.value })}
+              />
+            </Col>
+          </Row>
         </Modal>
       </Grid>
     );
