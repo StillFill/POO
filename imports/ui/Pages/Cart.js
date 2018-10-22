@@ -9,6 +9,7 @@ import { Meteor } from "meteor/meteor";
 import Modal from "../Components/Common/Modal";
 import SelectedClassPage from "../Components/Common/SelectedClassPage";
 import Cards from "react-credit-cards";
+import $ from "jquery";
 
 class Cart extends Component {
   constructor(props) {
@@ -17,6 +18,13 @@ class Cart extends Component {
       cardData: {}
     };
     this.payCart = this.payCart.bind(this);
+    this.handleInputFocus = this.handleInputFocus.bind(this);
+  }
+
+  componentDidMount() {
+    // console.log($("number"));
+    // $("number").mask("0000 0000 0000 0000");
+    // $("expiry").mask("00/00");
   }
 
   removeClassFromCart(c) {
@@ -43,6 +51,12 @@ class Cart extends Component {
     const total = this.getTotal();
     Meteor.call("payCart", { cartId: currentCart._id, total }, err => {
       if (err) console.log(err);
+    });
+  }
+
+  handleInputFocus({ target: { name } }) {
+    this.setState({
+      focused: name
     });
   }
 
@@ -134,18 +148,30 @@ class Cart extends Component {
             <Col md={6}>
               <ControlLabel>Nome no cartão</ControlLabel>
               <FormControl
+                id="name"
+                name="name"
+                onFocus={this.handleInputFocus}
                 onChange={e => this.setState({ ownerName: e.target.value })}
               />
               <ControlLabel>Número do cartão</ControlLabel>
               <FormControl
+                id="number"
+                name="number"
+                onFocus={this.handleInputFocus}
                 onChange={e => this.setState({ cardNumber: e.target.value })}
               />
               <ControlLabel>Expira em</ControlLabel>
               <FormControl
+                id="expiry"
+                name="expiry"
+                onFocus={this.handleInputFocus}
                 onChange={e => this.setState({ expiry: e.target.value })}
               />
               <ControlLabel>Código de segurança</ControlLabel>
               <FormControl
+                id="cvc"
+                name="cvc"
+                onFocus={this.handleInputFocus}
                 onChange={e => this.setState({ cardCvc: e.target.value })}
               />
             </Col>

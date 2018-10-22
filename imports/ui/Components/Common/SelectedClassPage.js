@@ -21,22 +21,22 @@ class NavBar extends Component {
     } = selectedClass;
     const user = Meteor.user();
     return (
-      <div class="selected-class-container">
-        <div class="product-principal-header">
+      <div className="selected-class-container">
+        <div className="product-principal-header">
           <div>
             <h2>{name}</h2>
             <h3>{description}</h3>
           </div>
           <h4 style={{ opacity: 0.6 }}>Criado por {created_by}</h4>
         </div>
-        <div class="middle-part">
+        <div className="middle-part">
           {!user && (
             <div className="login-warning">
               <p>Efetue o login para comprar este curso!</p>
             </div>
           )}
-          <div class="description-card">
-            <div class="description">
+          <div className="description-card">
+            <div className="description">
               {detailed_description || "Sem descrição"}
             </div>
           </div>

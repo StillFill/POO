@@ -1,289 +1,169 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { FormControl } from "react-bootstrap";
+import {
+  FormGroup,
+  ControlLabel,
+  FormControl,
+  Col,
+  Row
+} from "react-bootstrap";
 import Select from "react-select";
 import "react-select/dist/react-select.css";
 import "../Styles/Home";
 import "../Styles/Class";
 import "../Styles/RegisterClass";
+import ClassCard from "../Components/Common/ClassCard";
+import Modal from "../Components/Common/Modal";
+import RegisterClassPage from "../Components/Common/RegisterClassPage";
 import { iconOptions } from "../../modules/register-helpers";
+import { _ } from "meteor/underscore";
 
 class RegisterClass extends Component {
   constructor(props) {
     super(props);
-
-    this.defaultClass = {
-      name: "Nome do curso...",
-      description: "Descrição...",
-      created_by: "Mauricio Gregorio",
-      detailed_description: "Descrição mais detalhada",
-      price: 300,
-      include_list: [{ icon: "fa fa-user", label: "Insira o texto" }]
-    };
-
     this.state = {
-      selectedToEdit: null,
-      class: this.defaultClass,
-      changedValue: null,
-      showLeftBar: false,
-      classes: props.classes
+      isEditing: false,
+      classes: props.classes,
+      editingClass: null
     };
-    this.handleChangeForm = this.handleChangeForm.bind(this);
-    this.submitSelectedForm = this.submitSelectedForm.bind(this);
-    this.addNewInclude = this.addNewInclude.bind(this);
-    this.submitClass = this.submitClass.bind(this);
-    this.showBar = this.showBar.bind(this);
-    this.filterClasses = this.filterClasses.bind(this);
+    this.saveOrInsertClass = this.saveOrInsertClass.bind(this);
+    this.handleEditClass = this.handleEditClass.bind(this);
+    this.handleFilterClass = this.handleFilterClass.bind(this);
     this.removeClass = this.removeClass.bind(this);
   }
 
-  handleChangeForm({ target: { value, name, id } }) {
-    this.setState({ changedValue: value });
+  componentWillReceiveProps(nextProps) {
+    const { classes: propsClasses } = this.props;
+    const { classes: nextClasses } = nextProps;
+    if (!_.isEqual(propsClasses, nextClasses))
+      this.setState({ classes: nextClasses });
   }
 
-  focus(id) {
-    document.getElementById(id).focus();
-  }
-
-  submitSelectedForm({ key, keyCode }) {
-    if (keyCode === 13) {
-      const newClass = {
-        ...this.state.class,
-        [this.state.selectedToEdit]: this.state.changedValue
-      };
-      return this.setState({
-        class: newClass,
-        selectedToEdit: null
-      });
-    } else if (keyCode === 27) {
-      return this.setState({ selectedToEdit: null, changedValue: null });
-    }
-  }
-
-  renderForm(identifier, fontSize, isTextArea = false) {
-    return (
-      <FormControl
-        style={{ width: "80%", fontSize }}
-        onChange={this.handleChangeForm}
-        value={this.state[identifier]}
-        onKeyDown={this.submitSelectedForm}
-        name={identifier}
-        id={identifier}
-      />
-    );
-  }
-
-  showForm(identifier) {
-    this.setState({ selectedToEdit: identifier });
-    setTimeout(() => {
-      this.focus(identifier);
+  saveOrInsertClass() {
+    const method = this.state.isEditing ? "updateClass" : "insertClass";
+    Meteor.call(method, this.state.editingClass, err => {
+      if (err) console.log(err);
+      else this.setState({ showSelectedClass: false, isEditing: false });
     });
   }
 
-  renderCondition(identifier, fontSize) {
-    if (this.state.selectedToEdit === identifier) {
-      return this.renderForm(identifier, fontSize);
-    } else {
-      return (
-        <div
-          style={{ fontSize, wordWrap: "break-word" }}
-          onDoubleClick={() => this.showForm(identifier)}
-        >
-          {this.state.class[identifier]}
-        </div>
+  removeClass() {
+    Meteor.call("removeClass", { _id: this.state.classToRemove }, err => {
+      if (err) console.log(err);
+      else this.setState({ showConfirmationRemoveModal: false });
+    });
+  }
+
+  handleFilterClass({ target: { value } }) {
+    this.setState({ filterParam: value });
+    const { classes } = this.state;
+    const { classes: allClasses } = this.props;
+    if (value === "" || !value) this.setState({ classes: allClasses });
+    else {
+      const newClasses = classes.filter(a =>
+        a.name.toUpperCase().includes(value.toUpperCase())
       );
+      this.setState({ classes: newClasses });
     }
   }
 
-  setLabel({ keyCode }, label, index) {
-    if (keyCode !== 13) {
-      return;
-    }
-    const include_list = this.state.class.include_list;
-    include_list[index].label = label;
-    this.setState({
-      class: { ...this.state.class, include_list },
-      selectedLabel: null
-    });
-  }
-
-  resetLabel(index) {
-    const include_list = this.state.class.include_list;
-    include_list[index].label = null;
-    this.setState({ class: { ...this.state.class, include_list } });
-  }
-
-  setIcon(icon, index) {
-    const include_list = this.state.class.include_list;
-    include_list[index].icon = icon;
-    this.setState({ class: { ...this.state.class, include_list } });
-  }
-
-  resetIcon(index) {
-    const include_list = this.state.class.include_list;
-    include_list[index].icon = null;
-    this.setState({ class: { ...this.state.class, include_list } });
-  }
-
-  addNewInclude() {
-    const newClass = this.state.class;
-    const include_list = this.state.class.include_list;
-    this.setState({
-      class: {
-        ...newClass,
-        include_list: [
-          ...include_list,
-          { icon: "fa fa-user", label: "Insira o texto..." }
-        ]
-      }
-    });
-  }
-
-  submitClass() {
-    const newClass = this.state.class;
-    let method = "insertClass";
-    if (this.state.isEditing) method = "updateClass";
-    Meteor.call(method, newClass, (err, classId) => {
-      if (err) console.log(err);
-      else
-        this.setState({ class: this.defaultClass, isEditing: false }, () => {
-          const message = this.state.isEditing ? "atualizado" : "cadastrado";
-          Bert.alert(`Curso ${message} com sucesso!`, "success");
-        });
-    });
-  }
-
-  showBar() {
-    this.setState({ showLeftBar: !this.state.showLeftBar });
-  }
-
-  filterClasses({ target: { value } }) {
-    let classes = this.props.classes;
-    if (!value || value === "") {
-      this.setState({ classes });
-      return;
-    }
-    classes = classes.filter(a =>
-      a.name.toUpperCase().includes(value.toUpperCase())
-    );
-    this.setState({ filterClasses: value, classes });
-  }
-
-  componentWillReceiveProps(newProps) {
-    this.setState({ classes: newProps.classes });
-  }
-
-  removeClass(_id) {
-    Meteor.call("removeClass", { _id }, err => {
-      if (err) console.log(err);
-      else this.setState({ class: null, isEditing: false });
-    });
-  }
-
-  removeInclude(index) {
-    const newClass = this.state.class;
-    const include_list = this.state.class.include_list;
-    include_list.splice(index, 1);
-    this.setState({
-      class: {
-        ...newClass,
-        include_list
-      }
-    });
+  handleEditClass(editingClass) {
+    this.setState({ editingClass });
   }
 
   render() {
-    const classes = this.state.classes;
+    const { isEditing, filterParam, classes } = this.state;
     return (
-      <div className="home-container">
-        <div
-          className="left-bar"
-          style={
-            this.state.showLeftBar
-              ? { width: "350px", alignItems: "flex-start" }
-              : {}
+      <Row>
+        <FormGroup style={{ width: "30%", padding: "15px" }}>
+          <ControlLabel>Filtrar cursos</ControlLabel>
+          <FormControl
+            onChange={this.handleFilterClass}
+            value={filterParam}
+            placeholder="filtrar cursos..."
+          />
+        </FormGroup>
+        <div className="classes-table-header">
+          <span>Nome</span>
+          <span>Descrição</span>
+          <span>Criado por</span>
+          <span>Preço</span>
+          <span style={{ flex: 0.5 }} />
+        </div>
+        {classes.map(cl => (
+          <div
+            onClick={() =>
+              this.setState({
+                isEditing: true,
+                selectedClass: cl,
+                showSelectedClass: true
+              })
+            }
+            className="classes-table-row"
+          >
+            <span>{cl.name}</span>
+            <span>{cl.description}</span>
+            <span>{cl.created_by}</span>
+            <span>R$ {cl.price}</span>
+            <span style={{ flex: 0.5 }}>
+              <button
+                onClick={e => {
+                  e.stopPropagation();
+                  this.setState({
+                    showConfirmationRemoveModal: true,
+                    classToRemove: cl._id
+                  });
+                }}
+                className="remove-button"
+              >
+                <i className="fa fa-times" />
+              </button>
+            </span>
+          </div>
+        ))}
+        <Modal
+          full
+          showModal={this.state.showSelectedClass}
+          confirmationCallback={this.saveOrInsertClass}
+          confirmationButtonTitle={
+            this.state.isEditing ? "Salvar" : "Cadastrar"
+          }
+          closeModal={() =>
+            this.setState({ showSelectedClass: false, isEditing: false })
           }
         >
-          {this.state.showLeftBar && (
-            <div style={{ paddingTop: "1em" }}>
-              <div style={{ marginLeft: "0.7em" }}>
-                <FormControl
-                  onChange={this.filterClasses}
-                  value={this.state.filteredClasses}
-                />
-              </div>
-              {classes.map(clas => (
-                <div
-                  className="fake-image"
-                  onClick={() =>
-                    this.setState({ class: clas, isEditing: true })
-                  }
-                >
-                  <div className="product-label">{clas.name}</div>
-                  <div className="product-description">{clas.description}</div>
-                </div>
-              ))}
-            </div>
-          )}
-          <div className="right-side-left-bar">
-            <i
-              onClick={this.showBar}
-              className={`fa fa-chevron-${
-                this.state.showLeftBar ? "left" : "right"
-              }`}
-            />
-          </div>
-        </div>
-        <div className="selected-class-container">
-          {this.state.isEditing && (
-            <div className="editing-header">
-              <i
-                className="fa fa-chevron-left"
-                style={{ fontSize: "1.5em", cursor: "pointer" }}
-                onClick={() =>
-                  this.setState({ isEditing: false, class: this.defaultClass })
-                }
-              />
-              <i
-                className="fa fa-times"
-                style={{ fontSize: "1.5em", cursor: "pointer" }}
-                onClick={() => this.removeClass(this.state.class._id)}
-              />
-            </div>
-          )}
-          <div className="product-principal-header">
-            <div>
-              {this.renderCondition("name", "2.5em")}
-              <br />
-              {this.renderCondition("description", "1.5em")}
-            </div>
-            <div
-              style={{
-                opacity: 0.6,
-                display: "flex",
-                justifyContent: "space-between",
-                width: "28%"
-              }}
-            >
-              <span>Criado por</span>
-              <span>{this.renderCondition("created_by", "1em")}</span>
-            </div>
-            <div className="price-container">
-              R$ {this.renderCondition("price", "1em")}
-            </div>
-          </div>
-          <div className="middle-part">
-            <div className="description-card">
-              <div className="description">
-                {this.renderCondition("detailed_description", "1em")}
-              </div>
-            </div>
-          </div>
-          <button className="register-class-button" onClick={this.submitClass}>
-            {this.state.isEditing ? "Atualizar" : "Cadastrar"}
-          </button>
-        </div>
-      </div>
+          <RegisterClassPage
+            handleEditClass={this.handleEditClass}
+            isEditing={isEditing}
+            selectedClass={this.state.selectedClass || {}}
+          />
+        </Modal>
+        <Modal
+          title="Remover curso"
+          showModal={this.state.showConfirmationRemoveModal}
+          confirmationCallback={this.removeClass}
+          confirmationButtonTitle="Remover"
+          closeModal={() =>
+            this.setState({
+              showConfirmationRemoveModal: false
+            })
+          }
+        >
+          Tem certeza que deseja remover este curso?
+        </Modal>
+        <button
+          onClick={() =>
+            this.setState({
+              isEditing: false,
+              selectedClass: null,
+              showSelectedClass: true
+            })
+          }
+          className="new-class-button"
+        >
+          <i className="fa fa-plus" />
+        </button>
+      </Row>
     );
   }
 }

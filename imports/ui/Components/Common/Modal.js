@@ -28,7 +28,7 @@ class NavBar extends Component {
         <Modal.Body style={full ? { padding: 0 } : {}}>{children}</Modal.Body>
         <Modal.Footer>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Button onClick={closeModal}>Fechar</Button>
+            <Button onClick={closeModal}>Cancelar</Button>
             {confirmationCallback && (
               <div>
                 {disabledButton ? (
@@ -61,10 +61,9 @@ NavBar.propTypes = {
   id: PropTypes.string,
   closeModal: PropTypes.func,
   confirmationCallback: PropTypes.func,
-  confirmationButtonTitle: PropTypes,
+  confirmationButtonTitle: PropTypes.string,
   full: PropTypes.bool,
-  disabledButton: PropTypes,
-  disabledReason: PropTypes
+  disabledReason: PropTypes.string
 };
 
 NavBar.defaultProps = {
