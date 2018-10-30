@@ -15,7 +15,15 @@ const userOptions = [
     icon: "fa fa-cart-plus",
     action: () => sendTo("/carrinho")
   },
-  { label: "Sair", icon: "fa fa-sign-out-alt", action: Meteor.logout }
+  {
+    label: "Sair",
+    icon: "fa fa-sign-out-alt",
+    action: () => {
+      Meteor.logout(() => {
+        window.location.pathname = "/home";
+      });
+    }
+  }
 ];
 
 export const adminOptions = [
@@ -24,7 +32,15 @@ export const adminOptions = [
     icon: "fa fa-cog",
     action: () => sendTo("/registrar-curso")
   },
-  { label: "Sair", icon: "fa fa-sign-out-alt", action: Meteor.logout }
+  {
+    label: "Sair",
+    icon: "fa fa-sign-out-alt",
+    action: () => {
+      Meteor.logout(() => {
+        window.location.pathname = "/home";
+      });
+    }
+  }
 ];
 
 export default userOptions;

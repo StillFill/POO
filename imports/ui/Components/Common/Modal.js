@@ -16,10 +16,16 @@ class NavBar extends Component {
       full,
       disabledButton,
       disabledReason,
-      id
+      id,
+      small
     } = this.props;
     return (
-      <Modal id={id} show={showModal} onHide={closeModal}>
+      <Modal
+        id={id}
+        className={small ? "small-modal" : ""}
+        show={showModal}
+        onHide={closeModal}
+      >
         {title && (
           <Modal.Title>
             <h2 style={{ padding: "0 0.5em" }}>{title}</h2>
@@ -28,7 +34,9 @@ class NavBar extends Component {
         <Modal.Body style={full ? { padding: 0 } : {}}>{children}</Modal.Body>
         <Modal.Footer>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Button onClick={closeModal}>Cancelar</Button>
+            <buttton className="cancel-button" onClick={closeModal}>
+              Cancelar
+            </buttton>
             {confirmationCallback && (
               <div>
                 {disabledButton ? (
@@ -36,14 +44,21 @@ class NavBar extends Component {
                     overlay={getTooltip(disabledReason)}
                     placement="top"
                   >
-                    <Button disabled={true} onClick={confirmationCallback}>
+                    <button
+                      className="success-button"
+                      disabled={true}
+                      onClick={confirmationCallback}
+                    >
                       {confirmationButtonTitle}
-                    </Button>
+                    </button>
                   </OverlayTrigger>
                 ) : (
-                  <Button onClick={confirmationCallback}>
+                  <button
+                    className="success-button"
+                    onClick={confirmationCallback}
+                  >
                     {confirmationButtonTitle}
-                  </Button>
+                  </button>
                 )}
               </div>
             )}
@@ -63,7 +78,8 @@ NavBar.propTypes = {
   confirmationCallback: PropTypes.func,
   confirmationButtonTitle: PropTypes.string,
   full: PropTypes.bool,
-  disabledReason: PropTypes.string
+  disabledReason: PropTypes.string,
+  small: PropTypes.bool
 };
 
 NavBar.defaultProps = {

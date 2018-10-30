@@ -17,7 +17,7 @@ const routes = (
     <NavBar history={createBrowserHistory()} />
     <Route name="Home" path="/home" component={Home} />
     <Route name="Cursos" path="/cursos" component={Search}>
-      <Route name="Cursos" path="/cursos/:searchParam" component={Home} />
+      <Route name="Cursos" path="/cursos/:searchParam" component={Search} />
     </Route>
     <Route name="Minha conta" path="/meus-cursos" component={UserClasses} />
     <Route name="Carrinho" path="/carrinho" component={Cart} />

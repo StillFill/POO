@@ -17,7 +17,8 @@ class Search extends Component {
   }
 
   componentWillMount() {
-    const { classes, searchParam } = this.props;
+    const { classes, searchParam, cart } = this.props;
+    console.log(cart);
     let filteredClasses = classes.filter(a => a.name.includes(searchParam));
     if (!searchParam || searchParam === "") filteredClasses = classes;
     this.setState({ filteredClasses });
@@ -25,14 +26,30 @@ class Search extends Component {
 
   addToCart() {
     const user = Meteor.user();
-    Meteor.call(
-      "addToCart",
-      { user_id: user._id, classId: this.state.selectedClass._id },
-      err => {
+    const classId = this.state.selectedClass._id;
+    if (user) {
+      Meteor.call("addToCart", { user_id: user._id, classId }, err => {
         if (err) console.log(err);
         else window.location.pathname = "/carrinho";
+      });
+    } else {
+      const cart = JSON.parse(localStorage.getItem("userCart"));
+      if (!!cart) {
+        const newCart = cart;
+        cart.classes.push(classId);
+        localStorage.setItem("userCart", JSON.stringify(newCart));
+      } else {
+        localStorage.setItem(
+          "userCart",
+          JSON.stringify({
+            created_at: new Date(),
+            status: "open",
+            classes: [classId]
+          })
+        );
       }
-    );
+      window.location.pathname = "/carrinho";
+    }
   }
 
   handleChangeSearchParam({ target: { value } }) {
@@ -78,6 +95,7 @@ class Search extends Component {
             showModal={this.state.selectedClass}
             closeModal={() => this.setState({ selectedClass: null })}
             confirmationCallback={this.addToCart}
+            confirmationButtonTitle="Adicionar ao carrinho"
           >
             <SelectedClassPage selectedClass={this.state.selectedClass || {}} />
           </Modal>

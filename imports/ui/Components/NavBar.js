@@ -47,13 +47,20 @@ class NavBar extends Component {
     } else {
       doLogin({ login, password }, err => {
         if (!err) this.setState({ showLoginModal: false });
-        else window.location.pathname = "/home";
+        else {
+          window.location.pathname = "/home";
+        }
       });
     }
   }
 
   handleInputChange({ target: { value, name } }) {
     this.setState({ [name]: value });
+  }
+
+  componentWillMount() {
+    const user = Meteor.user();
+    if (user) localStorage.clear();
   }
 
   render() {
@@ -106,8 +113,9 @@ class NavBar extends Component {
           showModal={this.state.showLoginModal}
           confirmationButtonTitle="Logar"
           closeModal={() => this.setState({ showLoginModal: false })}
+          small
         >
-          <div style={{ marginTop: "0.5em" }}>
+          <div style={{ marginTop: "1rem" }}>
             <ControlLabel>Login</ControlLabel>
             <FormControl
               value={this.state.login}
@@ -115,7 +123,7 @@ class NavBar extends Component {
               name="login"
             />
           </div>
-          <div style={{ marginTop: "0.5em" }}>
+          <div style={{ marginTop: "1rem" }}>
             <ControlLabel>Senha</ControlLabel>
             <FormControl
               value={this.state.password}
@@ -130,8 +138,9 @@ class NavBar extends Component {
           title={"Cadastrar-se"}
           showModal={this.state.showRegisterModal}
           closeModal={() => this.setState({ showRegisterModal: false })}
+          small
         >
-          <div style={{ marginTop: "0.5em" }}>
+          <div style={{ marginTop: "1rem" }}>
             <ControlLabel>Nome</ControlLabel>
             <FormControl
               value={this.state.name}
@@ -139,7 +148,7 @@ class NavBar extends Component {
               name="name"
             />
           </div>
-          <div style={{ marginTop: "0.5em" }}>
+          <div style={{ marginTop: "1rem" }}>
             <ControlLabel>Email</ControlLabel>
             <FormControl
               value={this.state.email}
@@ -147,7 +156,7 @@ class NavBar extends Component {
               name="email"
             />
           </div>
-          <div style={{ marginTop: "0.5em" }}>
+          <div style={{ marginTop: "1rem" }}>
             <ControlLabel>Senha</ControlLabel>
             <FormControl
               value={this.state.password}
@@ -156,7 +165,7 @@ class NavBar extends Component {
               name="password"
             />
           </div>
-          <div style={{ marginTop: "0.5em" }}>
+          <div style={{ marginTop: "1rem" }}>
             <ControlLabel>Confirmar Senha</ControlLabel>
             <FormControl
               value={this.state.password_confirmation}

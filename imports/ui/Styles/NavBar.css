@@ -8,6 +8,10 @@
   position: relative;
 }
 
+.small-modal .modal-dialog {
+  width: 30%;
+}
+
 .navbar-container input {
   width: 30em;
 }
@@ -67,6 +71,25 @@
 .option-row div:first-child {
   padding-left: 0.2em;
   flex: 1;
+}
+.success-button {
+  background-color: #43a047;
+  color: white;
+  border: 0;
+  border-radius: 3px;
+  font-size: 1.2em;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.cancel-button {
+  background-color: red;
+  color: white;
+  border: 0;
+  border-radius: 3px;
+  font-size: 1.2em;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
 }
 
 .options-click {

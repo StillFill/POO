@@ -30,30 +30,43 @@ class Home extends Component {
     return (
       <Row>
         <Col style={{ padding: 0 }} md={12} xs={12} sm={12} responsive>
-          <div className="header-banner-title">
-            <h1>Encontre os melhores cursos aqui!</h1>
-            <div className="banner-form-button-shadow">
-              <div className="banner-form-button">
-                <FormControl
-                  searchable
-                  style={{
-                    borderRadius: "5px 0 0 5px",
-                    height: "40px"
-                  }}
-                  onChange={this.handleChange}
-                  placeholder="Ache o curso que deseja"
-                />
-                <button onClick={this.searchClass} className="search-button">
-                  <i className="fa fa-search" />
-                </button>
+          <div className="principal-banner" style={{ width: "100%" }}>
+            <div className="header-banner-title">
+              <h1>Encontre os melhores cursos aqui!</h1>
+              <div className="banner-form-button-shadow">
+                <div className="banner-form-button">
+                  <FormControl
+                    searchable
+                    style={{
+                      borderRadius: "5px 0 0 5px",
+                      height: "40px"
+                    }}
+                    onChange={this.handleChange}
+                    placeholder="Ache o curso que deseja"
+                  />
+                  <button onClick={this.searchClass} className="search-button">
+                    <i className="fa fa-search" />
+                  </button>
+                </div>
               </div>
+              <h3
+                style={{
+                  cursor: "pointer",
+                  width: "100%",
+                  textAlign: "right",
+                  textShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)"
+                }}
+              >
+                <a
+                  onClick={() => {
+                    window.location.pathname = "/cursos";
+                  }}
+                >
+                  Ver lista completa dos cursos
+                </a>
+              </h3>
             </div>
           </div>
-          <img
-            className="principal-banner"
-            style={{ width: "100%" }}
-            src="https://sindiconet-files.s3.amazonaws.com/Cursos/Curso/estrategias-de-vendas-para-sindicos-profissionais/HeroBanner/heroBanner.jpg?rn=320930"
-          />
         </Col>
       </Row>
     );

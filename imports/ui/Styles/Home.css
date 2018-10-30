@@ -3,7 +3,21 @@ body {
 }
 
 .principal-banner {
+  display: block;
+  position: relative;
   height: 90vh;
+}
+
+.principal-banner::after {
+  content: "";
+  opacity: 0.7;
+  background-image: url(https://sindiconet-files.s3.amazonaws.com/Cursos/Curso/estrategias-de-vendas-para-sindicos-profissionais/HeroBanner/heroBanner.jpg?rn=320930);
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
 }
 
 .class-card-body {

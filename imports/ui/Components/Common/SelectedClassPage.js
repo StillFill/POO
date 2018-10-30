@@ -30,11 +30,6 @@ class NavBar extends Component {
           <h4 style={{ opacity: 0.6 }}>Criado por {created_by}</h4>
         </div>
         <div className="middle-part">
-          {!user && (
-            <div className="login-warning">
-              <p>Efetue o login para comprar este curso!</p>
-            </div>
-          )}
           <div className="description-card">
             <div className="description">
               {detailed_description || "Sem descrição"}

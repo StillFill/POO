@@ -24,6 +24,10 @@ if (Meteor.isServer) {
         });
     },
 
+    getUserCart(user_id) {
+      return Carts.find({ user_id, status: "open" }).fetch()[0];
+    },
+
     payCart({ cartId, total }) {
       Carts.update(
         { _id: cartId },

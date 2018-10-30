@@ -14,8 +14,22 @@ import $ from "jquery";
 class Cart extends Component {
   constructor(props) {
     super(props);
+    const user = Meteor.user();
+    let currentCart = props.currentCart;
+    console.log(props.currentCart);
+    let classes = props.currentCart
+      ? props.classes.filter(a => props.currentCart.classes.includes(a._id))
+      : [];
+    const rootClasses = props.classes;
+    if (!user && localStorage.getItem("userCart")) {
+      const userCart = JSON.parse(localStorage.getItem("userCart"));
+      currentCart = userCart;
+      classes = rootClasses;
+    }
     this.state = {
-      cardData: {}
+      cardData: {},
+      currentCart,
+      classes
     };
     this.payCart = this.payCart.bind(this);
     this.handleInputFocus = this.handleInputFocus.bind(this);
@@ -27,27 +41,45 @@ class Cart extends Component {
     // $("expiry").mask("00/00");
   }
 
+  reloadCart() {
+    const { currentCart } = this.state;
+    const { classes: rootClasses } = this.props;
+    this.setState({
+      currentCart,
+      classes: rootClasses.filter(a => currentCart.classes.includes(a._id))
+    });
+  }
+
   removeClassFromCart(c) {
-    const { currentCart } = this.props;
-    Meteor.call(
-      "removeClassFromCart",
-      {
-        cartId: currentCart._id,
-        classId: c._id
-      },
-      err => {
-        console.log(err);
-      }
-    );
+    const user = Meteor.user();
+    const { currentCart } = this.state;
+    if (!user) {
+      const newCart = currentCart;
+      const index = currentCart.classes.indexOf(c._id);
+      newCart.classes.splice(index, 1);
+      localStorage.setItem("userCart", JSON.stringify(newCart));
+      this.reloadCart();
+    } else {
+      Meteor.call(
+        "removeClassFromCart",
+        {
+          cartId: currentCart._id,
+          classId: c._id
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
   }
 
   getTotal() {
-    const { classes } = this.props;
+    const { classes } = this.state;
     return classes.reduce((a, b) => a + Number(b.price), 0);
   }
 
   payCart() {
-    const { currentCart } = this.props;
+    const { currentCart } = this.state;
     const total = this.getTotal();
     Meteor.call("payCart", { cartId: currentCart._id, total }, err => {
       if (err) console.log(err);
@@ -61,7 +93,7 @@ class Cart extends Component {
   }
 
   render() {
-    const { currentCart, classes } = this.props;
+    const { currentCart, classes } = this.state;
     if (classes.length === 0 || !currentCart) {
       return (
         <div className="no-data-message">

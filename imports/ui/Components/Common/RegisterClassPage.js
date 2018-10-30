@@ -125,11 +125,6 @@ class RegisterClass extends Component {
           </h4>
         </div>
         <div className="middle-part">
-          {!user && (
-            <div className="login-warning">
-              <p>Efetue o login para comprar este curso!</p>
-            </div>
-          )}
           <div className="description-card">
             <div className="description">
               {this.renderCondition("detailed_description", "1em")}
