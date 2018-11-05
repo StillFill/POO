@@ -1,73 +1,73 @@
 .common-table {
-  padding: 15px;
+	padding: 15px;
 }
 
 .table-body {
 }
 
 .table-header {
-  display: flex;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  font-weight: 700;
-  font-size: 1.2em;
-  text-transform: uppercase;
+	display: flex;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	font-weight: 700;
+	font-size: 1.2em;
+	text-transform: uppercase;
 }
 
 .table-row {
-  display: flex;
-  background-color: white;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  font-weight: 1.1em;
-  text-transform: capitalize;
+	display: flex;
+	background-color: white;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+	font-weight: 1.1em;
+	text-transform: capitalize;
 }
 
 .table-header div {
-  flex: 1;
+	flex: 1;
 }
 
 .table-row div {
-  flex: 1;
+	flex: 1;
 }
 
 .table-row-cell {
-  padding: 10px;
-  white-space: nowrap;
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
+	padding: 10px;
+	white-space: nowrap;
+	width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	border-right: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .table-header-cell {
-  padding: 10px;
-  background-color: rgba(0, 0, 0, 0.05);
+	padding: 10px;
+	background-color: rgba(0, 0, 0, 0.05);
 }
 
 .table-row:hover {
-  background-color: rgba(0, 0, 0, 0.11);
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
-  font-weight: 600;
+	background-color: rgba(0, 0, 0, 0.11);
+	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+	font-weight: 600;
 }
 
 .remove-button {
-  background-color: transparent;
-  color: red;
-  border: 1px solid red;
-  cursor: pointer;
-  border-radius: 3px;
-  font-size: 1.5em;
-  padding: 0 1rem;
+	background-color: transparent;
+	color: #ef5350;
+	border: 1px solid #ef5350;
+	cursor: pointer;
+	border-radius: 3px;
+	font-size: 1.5em;
+	padding: 0 1rem;
 }
 
 .remove-button:hover {
-  background-color: red;
-  color: white;
+	background-color: #ef5350;
+	color: white;
 }
 
 .no-data-message {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 400px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 400px;
 }

@@ -1,38 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import '../Styles/Home';
-import '../Styles/Class';
-import Table from '../Components/Common/Table';
-import CartSummary from '../Components/CartSummary';
-import { Grid, Row, Col, FormControl } from 'react-bootstrap';
+import '../Components/CartSummary';
+import { Grid, Row, FormControl, Radio, FormGroup } from 'react-bootstrap';
 import { Meteor } from 'meteor/meteor';
 import Modal from '../Components/Common/Modal';
-import SelectedClassPage from '../Components/Common/SelectedClassPage';
-import Cards from 'react-credit-cards';
-import $ from 'jquery';
-import { card, expiration } from 'creditcards';
+import PaymentMethods from '../Components/PaymentMethods';
 
 class Cart extends Component {
 	constructor(props) {
 		super(props);
-		const user = Meteor.user();
-		let currentCart = props.currentCart;
-		console.log(props.currentCart);
-		let classes = props.currentCart ? props.classes.filter(a => props.currentCart.classes.includes(a._id)) : [];
-		const rootClasses = props.classes;
-		if (!user && localStorage.getItem('userCart')) {
-			const userCart = JSON.parse(localStorage.getItem('userCart'));
-			currentCart = userCart;
-			classes = rootClasses;
-		}
 		this.state = {
 			cardData: {},
-			currentCart,
-			classes
+			selectedPaymentMethod: 'waiting'
 		};
 		this.payCart = this.payCart.bind(this);
-		this.validateCard = this.validateCard.bind(this);
-		this.handleInputFocus = this.handleInputFocus.bind(this);
+		this.handleWantToPay = this.handleWantToPay.bind(this);
 	}
 
 	componentDidMount() {
@@ -80,26 +62,43 @@ class Cart extends Component {
 
 	payCart() {
 		const { currentCart } = this.state;
+		console.log(currentCart);
 		const total = this.getTotal();
 		Meteor.call('payCart', { cartId: currentCart._id, total }, err => {
 			if (err) console.log(err);
 		});
 	}
 
-	handleInputFocus({ target: { name } }) {
-		this.setState({
-			focused: name
+	componentWillMount() {
+		const user = Meteor.user();
+		const { classes } = this.props;
+		let currentCart = this.props.currentCart;
+		console.log(currentCart, classes);
+		this.setState({ currentCart, classes });
+	}
+
+	gerarBoleto() {
+		const value = this.props.classes.reduce((a, b) => a + b.price, 0) * 100;
+		Meteor.call('createBoleto', { value }, (err, result) => {
+			if (err) console.log(err);
+			else {
+				const a = window.open();
+				a.document.write(result);
+			}
 		});
 	}
 
-	validateCard() {
-		const isValid = card.isValid(this.state.cardNumber);
-		const isExpiry = expiration.isPast(10, 2010);
-		console.log(isExpiry);
+	handleWantToPay() {
+		this.setState({ isPayingCart: true });
+		const user = Meteor.user();
+		if (!user) {
+		} else {
+		}
 	}
 
 	render() {
-		const { currentCart, classes } = this.state;
+		const user = Meteor.user();
+		const { currentCart, classes, selectedPaymentMethod } = this.state;
 		if (classes.length === 0 || !currentCart) {
 			return (
 				<div className="no-data-message">
@@ -107,8 +106,7 @@ class Cart extends Component {
 				</div>
 			);
 		}
-		const total = this.getTotal();
-		const { cardNumber, ownerName, cardExpiry, cardCvc, focused } = this.state;
+		const isBoletoSelected = this.state.checkBoxSelected === 'boleto';
 		return (
 			<Grid fluid>
 				<Row>
@@ -128,7 +126,7 @@ class Cart extends Component {
 					{classes.map(cl => (
 						<div className="cart-table-row">
 							<div className="cart-item-image">
-								<img src="https://www.northeastern.edu/graduate/blog/wp-content/uploads/2016/08/Online-Learning-Hero-1.jpg" />
+								<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMvrFj4zx_q7kqXBuo7d6kF3knIb_W4nXWIP7TdgESPWAPoB9R" />
 							</div>
 							<div className="cart-item-name">
 								<div className="cart-item-name-description">
@@ -155,61 +153,48 @@ class Cart extends Component {
 				</Row>
 				<Row>
 					<div className="pay-cart">
-						<button className="pay-cart-button" onClick={() => this.setState({ isPayingCart: true })}>
+						<button className="pay-cart-button" onClick={this.handleWantToPay}>
 							Finalizar compra
 						</button>
 					</div>
 				</Row>
 				<Modal
-					confirmationCallback={this.validateCard}
+					title="Forma de pagamento"
+					showFooter={false}
 					showModal={this.state.isPayingCart}
-					closeModal={() => this.setState({ isPayingCart: false })}
+					closeModal={() => this.setState({ isPayingCart: false, selectedPaymentMethod: 'waiting' })}
 				>
-					<div>
-						<Row md={6}>
-							<Cards
-								number={cardNumber || ''}
-								name={ownerName || ''}
-								expiry={cardExpiry || ''}
-								cvc={cardCvc || ''}
-								focused={focused || ''}
-							/>
-						</Row>
-						<Row>
-							<Col md={6}>
-								<div className="form-label">Nome no cartão</div>
-								<FormControl
-									id="name"
-									name="name"
-									onFocus={this.handleInputFocus}
-									onChange={e => this.setState({ ownerName: e.target.value })}
-								/>
-								<div className="form-label">Número do cartão</div>
-								<FormControl
-									id="number"
-									name="number"
-									onFocus={this.handleInputFocus}
-									onChange={e => this.setState({ cardNumber: e.target.value })}
-								/>
-							</Col>
-							<Col md={6}>
-								<div className="form-label">Expira em</div>
-								<FormControl
-									id="expiry"
-									name="expiry"
-									onFocus={this.handleInputFocus}
-									onChange={e => this.setState({ expiry: e.target.value })}
-								/>
-								<div className="form-label">Código de segurança</div>
-								<FormControl
-									id="cvc"
-									name="cvc"
-									onFocus={this.handleInputFocus}
-									onChange={e => this.setState({ cardCvc: e.target.value })}
-								/>
-							</Col>
-						</Row>
-					</div>
+					{' '}
+					{selectedPaymentMethod === 'waiting' && (
+						<div>
+							<FormGroup>
+								<Radio
+									name="radioGroup"
+									onChange={() => this.setState({ checkBoxSelected: 'credit_card' })}
+								>
+									Cartão de crédito
+								</Radio>
+								<Radio name="radioGroup" onChange={() => this.setState({ checkBoxSelected: 'boleto' })}>
+									Boleto
+								</Radio>
+							</FormGroup>
+							<div className="flex-end">
+								<button
+									onClick={() => {
+										if (isBoletoSelected) {
+											this.gerarBoleto();
+										} else {
+											this.setState({ selectedPaymentMethod: this.state.checkBoxSelected });
+										}
+									}}
+									className="success-button"
+								>
+									{isBoletoSelected ? 'Gerar boleto' : 'Avançar'}
+								</button>
+							</div>
+						</div>
+					)}
+					{selectedPaymentMethod === 'credit_card' && <PaymentMethods classes={classes} />}
 				</Modal>
 			</Grid>
 		);

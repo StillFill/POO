@@ -101,3 +101,9 @@
 .form-label {
 	margin-top: 15px;
 }
+
+.flex-end {
+	display: flex;
+	justify-content: flex-end;
+	width: 100%;
+}
