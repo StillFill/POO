@@ -24,8 +24,11 @@ class Login extends Component {
 			err => {
 				if (err) console.log(err);
 				else {
-					doLogin({ login: email, password }, () => {
-						this.props.closeModal();
+					doLogin({ login: email, password }, err => {
+						if (!err) {
+							this.props.closeModal();
+							this.props.callback();
+						}
 					});
 				}
 			}
@@ -78,6 +81,7 @@ class Login extends Component {
 export default Login;
 
 Login.propTypes = {
+	callback: PropTypes.func,
 	showRegisterModal: PropTypes.bool,
 	closeModal: PropTypes.func
 };

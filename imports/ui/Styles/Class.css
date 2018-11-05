@@ -1,14 +1,12 @@
 .product-principal-header {
 	position: relative;
 	display: flex;
-	flex-direction: column;
 	justify-content: space-between;
 	font-family: 'Arial';
 	background-color: #505763;
 	color: white;
 	padding: 1em;
 	height: 30%;
-	padding-right: 40%;
 }
 
 .description-card {

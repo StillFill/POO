@@ -5,6 +5,8 @@ import { Grid, Row, FormControl, Radio, FormGroup } from 'react-bootstrap';
 import { Meteor } from 'meteor/meteor';
 import Modal from '../Components/Common/Modal';
 import PaymentMethods from '../Components/PaymentMethods';
+import LoginModal from '../Components/Login';
+import RegisterModal from '../Components/Register';
 
 class Cart extends Component {
 	constructor(props) {
@@ -89,10 +91,11 @@ class Cart extends Component {
 	}
 
 	handleWantToPay() {
-		this.setState({ isPayingCart: true });
 		const user = Meteor.user();
 		if (!user) {
+			this.setState({ showLoginForm: true });
 		} else {
+			this.setState({ isPayingCart: true });
 		}
 	}
 
@@ -196,6 +199,38 @@ class Cart extends Component {
 					)}
 					{selectedPaymentMethod === 'credit_card' && <PaymentMethods classes={classes} />}
 				</Modal>
+				<Modal
+					title="Forma de pagamento"
+					showFooter={false}
+					showModal={this.state.showLoginForm}
+					closeModal={() => this.setState({ showLoginForm: false })}
+				>
+					<div style={{ display: 'flex', flexDirection: 'column' }}>
+						<button
+							className="login-button"
+							onClick={() => this.setState({ loginState: 'login', showLoginForm: false })}
+						>
+							Login
+						</button>
+						<button
+							style={{ margin: '1em 0 0 0' }}
+							className="register-button"
+							onClick={() => this.setState({ loginState: 'register', showLoginForm: false })}
+						>
+							Cadastre-se
+						</button>
+					</div>
+				</Modal>
+				<LoginModal
+					showLoginModal={this.state.loginState === 'login'}
+					closeModal={() => this.setState({ loginState: null })}
+					callback={() => this.setState({ isPayingCart: true })}
+				/>
+				<RegisterModal
+					showRegisterModal={this.state.loginState === 'register'}
+					closeModal={() => this.setState({ loginState: null })}
+					callback={() => this.setState({ isPayingCart: true })}
+				/>
 			</Grid>
 		);
 	}

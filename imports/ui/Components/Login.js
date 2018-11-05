@@ -14,7 +14,10 @@ class Login extends Component {
 	handleSubmit() {
 		const { password, login } = this.state;
 		doLogin({ login, password }, err => {
-			if (!err) this.props.closeModal();
+			if (!err) {
+				this.props.closeModal();
+				this.props.callback();
+			}
 		});
 	}
 
@@ -54,5 +57,6 @@ export default Login;
 
 Login.propTypes = {
 	showLoginModal: PropTypes.bool,
-	closeModal: PropTypes.func
+	closeModal: PropTypes.func,
+	callback: PropTypes.func
 };
