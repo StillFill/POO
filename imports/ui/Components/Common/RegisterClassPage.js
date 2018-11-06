@@ -26,7 +26,7 @@ class RegisterClass extends Component {
 
 		this.state = {
 			selectedToEdit: null,
-			selectedClass: this.props.selectedClass || this.defaultClass,
+			selectedClass: this.defaultClass,
 			changedValue: null,
 			showLeftBar: false,
 			classes: props.classes
@@ -113,7 +113,13 @@ class RegisterClass extends Component {
 		console.log(this.state.selectedClass.image);
 		return (
 			<div className="selected-class-container">
-				<button onClick={() => this.setState({ showImageModal: true })}>Adicionar imagem</button>
+				<button
+					onClick={() => this.setState({ showImageModal: true })}
+					className="success-button"
+					style={{ width: '100%' }}
+				>
+					Adicionar imagem
+				</button>
 				<div
 					className="product-principal-header"
 					style={{ backgroundImage: `url(${this.state.selectedClass.image})` }}
