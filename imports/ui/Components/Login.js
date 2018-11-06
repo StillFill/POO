@@ -60,3 +60,7 @@ Login.propTypes = {
 	closeModal: PropTypes.func,
 	callback: PropTypes.func
 };
+
+Login.defaultProps = {
+	callback: () => {}
+};

@@ -10,7 +10,7 @@ class ClassCard extends Component {
 
 	render() {
 		const { cardClass, onClick, onRemove, removeIcon, key, showPrice } = this.props;
-		const { name, description, created_by, price } = cardClass;
+		const { name, description, created_by, price, image } = cardClass;
 		return (
 			<div
 				className="class-card"
@@ -28,7 +28,7 @@ class ClassCard extends Component {
 					/>
 				)}
 				<div className="fake-image">
-					<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMvrFj4zx_q7kqXBuo7d6kF3knIb_W4nXWIP7TdgESPWAPoB9R" />
+					<img src={image} />
 				</div>
 				<div className="class-card-body">
 					<div className="product-label">{name}</div>

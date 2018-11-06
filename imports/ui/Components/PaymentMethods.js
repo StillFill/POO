@@ -20,9 +20,18 @@ class PaymentMethods extends Component {
 	setClassesToUser() {
 		const user = Meteor.user();
 		const { classes } = this.props;
-		const classesIds = [...classes.map(a => a._id), ...user.classes];
+		const ids = classes.map(a => a._id);
+		console.log(ids);
+		let classesIds = ids;
+		if (user.classes) {
+			classesIds = [...classesIds, ...user.classes];
+		}
+		console.log(classesIds);
 		Meteor.call('addClassToUser', { _id: user._id, classes: classesIds }, err => {
-			console.log(err);
+			if (!err) {
+				this.props.closeModal();
+				this.props.payCart();
+			}
 		});
 	}
 

@@ -28,6 +28,11 @@ export const adminOptions = [
 		action: () => sendTo('/registrar-curso')
 	},
 	{
+		label: 'Relatório',
+		icon: 'fa fa-chart-bar',
+		action: () => sendTo('/relatorio')
+	},
+	{
 		label: 'Sair',
 		icon: 'fa fa-sign-out-alt',
 		action: () => {

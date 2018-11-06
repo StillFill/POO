@@ -47,7 +47,25 @@ if (Meteor.isServer) {
 		},
 
 		payCart({ cartId, total }) {
-			Carts.update({ _id: cartId }, { $set: { status: 'paid', paid_at: new Date(), total_price: total } });
+			const protocolo =
+				Math.random()
+					.toString(36)
+					.substring(2, 15) +
+				Math.random()
+					.toString(36)
+					.substring(2, 15);
+			Carts.update(
+				{ _id: cartId },
+				{
+					$set: {
+						status: 'paid',
+						paid_at: new Date(),
+						total_price: total,
+						protocolo: protocolo.toUpperCase()
+					}
+				}
+			);
+			return protocolo;
 		}
 	});
 }

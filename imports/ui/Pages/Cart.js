@@ -17,6 +17,7 @@ class Cart extends Component {
 		};
 		this.payCart = this.payCart.bind(this);
 		this.handleWantToPay = this.handleWantToPay.bind(this);
+		this.handleLogin = this.handleLogin.bind(this);
 	}
 
 	componentDidMount() {
@@ -66,8 +67,8 @@ class Cart extends Component {
 		const { currentCart } = this.state;
 		console.log(currentCart);
 		const total = this.getTotal();
-		Meteor.call('payCart', { cartId: currentCart._id, total }, err => {
-			if (err) console.log(err);
+		Meteor.call('payCart', { cartId: currentCart._id, total }, (err, protocolo) => {
+			if (!err) this.setState({ showSuccessPage: true, protocolo });
 		});
 	}
 
@@ -77,6 +78,19 @@ class Cart extends Component {
 		let currentCart = this.props.currentCart;
 		console.log(currentCart, classes);
 		this.setState({ currentCart, classes });
+	}
+
+	handleLogin() {
+		const { classes } = this.props;
+		const user = Meteor.user();
+		classes.map(async cl => {
+			await Meteor.call('addToCart', { user_id: user._id, classId: cl._id });
+		});
+		Meteor.call('getUserCart', user._id, (err, cart) => {
+			this.setState({ isPayingCart: true, currentCart: cart }, () => {
+				localStorage.setItem('userCart', null);
+			});
+		});
 	}
 
 	gerarBoleto() {
@@ -102,7 +116,9 @@ class Cart extends Component {
 	render() {
 		const user = Meteor.user();
 		const { currentCart, classes, selectedPaymentMethod } = this.state;
+		console.log(currentCart);
 		if (classes.length === 0 || !currentCart) {
+			console.log('não tem nad');
 			return (
 				<div className="no-data-message">
 					<h1>Você não tem nenhum curso no carrinho</h1>
@@ -129,7 +145,7 @@ class Cart extends Component {
 					{classes.map(cl => (
 						<div className="cart-table-row">
 							<div className="cart-item-image">
-								<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMvrFj4zx_q7kqXBuo7d6kF3knIb_W4nXWIP7TdgESPWAPoB9R" />
+								<img src={cl.image} />
 							</div>
 							<div className="cart-item-name">
 								<div className="cart-item-name-description">
@@ -162,9 +178,9 @@ class Cart extends Component {
 					</div>
 				</Row>
 				<Modal
-					title="Forma de pagamento"
+					title={this.state.showSuccessPage ? 'Pagamento realizado com sucesso' : 'Forma de pagamento'}
 					showFooter={false}
-					showModal={this.state.isPayingCart}
+					showModal={this.state.isPayingCart || this.state.showSuccessPage}
 					closeModal={() => this.setState({ isPayingCart: false, selectedPaymentMethod: 'waiting' })}
 				>
 					{' '}
@@ -197,10 +213,30 @@ class Cart extends Component {
 							</div>
 						</div>
 					)}
-					{selectedPaymentMethod === 'credit_card' && <PaymentMethods classes={classes} />}
+					{selectedPaymentMethod === 'credit_card' && (
+						<PaymentMethods
+							payCart={this.payCart}
+							classes={classes}
+							closeModal={() =>
+								this.setState({
+									selectedPaymentMethod: null,
+									showLoginForm: false,
+									isPayingCart: false
+								})}
+						/>
+					)}
+					{this.state.showSuccessPage && (
+						<div>
+							<h3>Obrigado por comprar conosco!</h3>
+							<p>
+								<strong>Numero de protocolo: </strong>
+								{this.state.protocolo.toUpperCase()}
+							</p>
+						</div>
+					)}
 				</Modal>
 				<Modal
-					title="Forma de pagamento"
+					title="Efetuar login"
 					showFooter={false}
 					showModal={this.state.showLoginForm}
 					closeModal={() => this.setState({ showLoginForm: false })}
@@ -224,12 +260,12 @@ class Cart extends Component {
 				<LoginModal
 					showLoginModal={this.state.loginState === 'login'}
 					closeModal={() => this.setState({ loginState: null })}
-					callback={() => this.setState({ isPayingCart: true })}
+					callback={this.handleLogin}
 				/>
 				<RegisterModal
 					showRegisterModal={this.state.loginState === 'register'}
 					closeModal={() => this.setState({ loginState: null })}
-					callback={() => this.setState({ isPayingCart: true })}
+					callback={this.handleLogin}
 				/>
 			</Grid>
 		);

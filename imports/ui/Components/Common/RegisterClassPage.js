@@ -26,13 +26,14 @@ class RegisterClass extends Component {
 
 		this.state = {
 			selectedToEdit: null,
-			selectedClass: this.defaultClass,
+			selectedClass: this.props.selectedClass || this.defaultClass,
 			changedValue: null,
 			showLeftBar: false,
 			classes: props.classes
 		};
 		this.handleChangeForm = this.handleChangeForm.bind(this);
 		this.submitSelectedForm = this.submitSelectedForm.bind(this);
+		this.handleChangeImage = this.handleChangeImage.bind(this);
 	}
 
 	componentDidMount() {
@@ -87,6 +88,15 @@ class RegisterClass extends Component {
 		}, 100);
 	}
 
+	handleChangeImage(e) {
+		const image = e.target.value;
+		const newClass = this.state.selectedClass;
+		newClass.image = image;
+		this.setState({ selectedClass: newClass }, () => {
+			this.props.handleEditClass(this.state.selectedClass);
+		});
+	}
+
 	renderCondition(identifier, fontSize) {
 		if (this.state.selectedToEdit === identifier) {
 			return this.renderForm(identifier, fontSize);
@@ -100,9 +110,14 @@ class RegisterClass extends Component {
 		}
 	}
 	render() {
+		console.log(this.state.selectedClass.image);
 		return (
 			<div className="selected-class-container">
-				<div className="product-principal-header">
+				<button onClick={() => this.setState({ showImageModal: true })}>Adicionar imagem</button>
+				<div
+					className="product-principal-header"
+					style={{ backgroundImage: `url(${this.state.selectedClass.image})` }}
+				>
 					<div>
 						<div>
 							<h2>{this.renderCondition('name', '1em')}</h2>
@@ -119,6 +134,13 @@ class RegisterClass extends Component {
 						<div className="description">{this.renderCondition('detailed_description', '1em')}</div>
 					</div>
 				</div>
+				<Modal
+					showModal={this.state.showImageModal}
+					closeModal={() => this.setState({ showImageModal: false })}
+					confirmationCallback={() => this.setState({ showImageModal: false })}
+				>
+					<FormControl onChange={this.handleChangeImage} value={this.state.selectedClass.image} />
+				</Modal>
 			</div>
 		);
 	}

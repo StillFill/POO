@@ -34,31 +34,44 @@ class NavBar extends Component {
 				<h2 style={{ cursor: 'pointer' }} onClick={() => this.sendTo('/home')}>
 					Aquamarine
 				</h2>
-				{user || isMobile ? (
-					<UserOptions
-						loginOptions={[
-							{
-								label: 'Login',
-								icon: 'fa fa-cog',
-								action: () => this.setState({ showLoginModal: true })
-							},
-							{
-								label: 'Cadastrar',
-								icon: 'fa fa-sign-out-alt',
-								action: () => this.setState({ showRegisterModal: true })
-							}
-						]}
-					/>
-				) : (
-					<div className="user-buttons">
-						<button className="login-button" onClick={() => this.setState({ showLoginModal: true })}>
-							Login
-						</button>
-						<button className="register-button" onClick={() => this.setState({ showRegisterModal: true })}>
-							Cadastrar-se
-						</button>
-					</div>
-				)}
+				<div style={{ display: 'flex' }}>
+					<button
+						onClick={() => {
+							window.location.pathname = '/carrinho';
+						}}
+						className="cart-button"
+					>
+						<i className="fa fa-shopping-cart" /> Carrinho
+					</button>
+					{user || isMobile ? (
+						<UserOptions
+							loginOptions={[
+								{
+									label: 'Login',
+									icon: 'fa fa-cog',
+									action: () => this.setState({ showLoginModal: true })
+								},
+								{
+									label: 'Cadastrar',
+									icon: 'fa fa-sign-out-alt',
+									action: () => this.setState({ showRegisterModal: true })
+								}
+							]}
+						/>
+					) : (
+						<div className="user-buttons">
+							<button className="login-button" onClick={() => this.setState({ showLoginModal: true })}>
+								Login
+							</button>
+							<button
+								className="register-button"
+								onClick={() => this.setState({ showRegisterModal: true })}
+							>
+								Cadastrar-se
+							</button>
+						</div>
+					)}
+				</div>
 
 				<LoginModal
 					showLoginModal={this.state.showLoginModal}

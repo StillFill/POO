@@ -4,7 +4,7 @@ import Modal from './Common/Modal';
 import { FormControl, ControlLabel } from 'react-bootstrap';
 import { doLogin } from '../../modules/student-helpers';
 
-class Login extends Component {
+class Register extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
@@ -78,10 +78,14 @@ class Login extends Component {
 	}
 }
 
-export default Login;
+export default Register;
 
-Login.propTypes = {
+Register.propTypes = {
 	callback: PropTypes.func,
 	showRegisterModal: PropTypes.bool,
 	closeModal: PropTypes.func
+};
+
+Register.defaultProps = {
+	callback: () => {}
 };

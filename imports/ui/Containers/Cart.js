@@ -5,7 +5,8 @@ import { Carts } from '../../api/carts/carts';
 
 const dataLoader = (props, onData) => {
 	const user = Meteor.user();
-	const rootCart = localStorage.getItem('userCart');
+	const rootCart = JSON.parse(localStorage.getItem('userCart'));
+	console.log(rootCart);
 	if (user) {
 		console.log(user);
 		if (Meteor.subscribe('getUserCurrentCart', user._id).ready()) {
@@ -20,11 +21,12 @@ const dataLoader = (props, onData) => {
 				onData(null, { currentCart: null, classes: [] });
 			}
 		}
-	} else if (rootCart) {
-		const userCart = JSON.parse(localStorage.getItem('userCart'));
-		Meteor.call('getClassesFromCart', userCart.classes, (err, classes) => {
-			onData(null, { currentCart: userCart, classes: classes || [] });
+	} else if (rootCart !== null) {
+		Meteor.call('getClassesFromCart', rootCart.classes, (err, classes) => {
+			onData(null, { currentCart: rootCart, classes: classes || [] });
 		});
+	} else {
+		onData(null, { currentCart: null, classes: [] });
 	}
 };
 const CartContainer = compose(dataLoader)(Cart);
