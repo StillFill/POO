@@ -17,12 +17,13 @@ class NavBar extends Component {
       detailed_description,
       price,
       _id,
+      image,
       include_list
     } = selectedClass;
     const user = Meteor.user();
     return (
       <div className="selected-class-container">
-        <div className="product-principal-header">
+        <div className="product-principal-header" style={{ backgroundImage: `url(${image})` }}>
           <div>
             <h2>{name}</h2>
             <h3>{description}</h3>

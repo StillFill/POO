@@ -67,9 +67,14 @@ class Cart extends Component {
 	payCart() {
 		const { currentCart } = this.props;
 		const total = this.getTotal();
-		Meteor.call('payCart', { cartId: currentCart._id, total }, (err, protocolo) => {
-			if (!err) this.setState({ showSuccessPage: true, protocolo });
-		});
+		const protocolo =
+			Math.random()
+				.toString(36)
+				.substring(2, 15) +
+			Math.random()
+				.toString(36)
+				.substring(2, 15);
+		this.setState({ showSuccessPage: true, protocolo });
 	}
 
 	handleLogin() {
@@ -127,6 +132,7 @@ class Cart extends Component {
 			);
 		}
 		const isBoletoSelected = this.state.checkBoxSelected === 'boleto';
+		console.log(this.state);
 		return (
 			<Grid fluid>
 				<Row>
@@ -183,18 +189,12 @@ class Cart extends Component {
 					showFooter={false}
 					showModal={this.state.isPayingCart || this.state.showSuccessPage}
 					closeModal={() =>
-						this.setState(
-							{
-								isPayingCart: false,
-								selectedPaymentMethod: null,
-								showLoginForm: false
-							},
-							() => {
-								if (this.state.showSuccessPage) {
-									window.location.pathname = '/meus-cursos';
-								}
-							}
-						)}
+						this.setState({
+							selectedPaymentMethod: null,
+							showLoginForm: false,
+							showSuccessPage: false,
+							isPayingCart: false
+						})}
 				>
 					{' '}
 					{selectedPaymentMethod === 'waiting' && (
@@ -226,18 +226,30 @@ class Cart extends Component {
 							</div>
 						</div>
 					)}
-					{selectedPaymentMethod === 'credit_card' && (
-						<PaymentMethods
-							payCart={this.payCart}
-							classes={classes}
-							closeModal={() =>
-								this.setState({
-									selectedPaymentMethod: null,
-									showLoginForm: false,
-									isPayingCart: false
-								})}
-						/>
-					)}
+					{selectedPaymentMethod === 'credit_card' &&
+						!this.state.showSuccessPage && (
+							<PaymentMethods
+								payCart={this.payCart}
+								classes={classes}
+								closeModal={() => {
+									this.setState(
+										{
+											selectedPaymentMethod: null,
+											showLoginForm: false
+										},
+										() => {
+											Meteor.call(
+												'payCart',
+												{ cartId: currentCart._id, total, protocolo: this.state.protocolo },
+												(err, protocolo) => {
+													this.setState({ showSuccessPage: false, isPayingCart: false });
+												}
+											);
+										}
+									);
+								}}
+							/>
+						)}
 					{this.state.showSuccessPage && (
 						<div>
 							<h3>Obrigado por comprar conosco!</h3>

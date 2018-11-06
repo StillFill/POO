@@ -29,7 +29,6 @@ class PaymentMethods extends Component {
 		console.log(classesIds);
 		Meteor.call('addClassToUser', { _id: user._id, classes: classesIds }, err => {
 			if (!err) {
-				this.props.closeModal();
 				this.props.payCart();
 			}
 		});

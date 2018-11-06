@@ -46,14 +46,7 @@ if (Meteor.isServer) {
 			return a;
 		},
 
-		payCart({ cartId, total }) {
-			const protocolo =
-				Math.random()
-					.toString(36)
-					.substring(2, 15) +
-				Math.random()
-					.toString(36)
-					.substring(2, 15);
+		payCart({ cartId, total, protocolo }) {
 			Carts.update(
 				{ _id: cartId },
 				{
