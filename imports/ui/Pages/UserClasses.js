@@ -32,6 +32,7 @@ class UserClasses extends Component {
 		const { filteredClasses, searchParam } = this.state;
 		return (
 			<div>
+				<h1>Meus cursos</h1>
 				<Row style={{ marginTop: '30px' }}>
 					<Col md={6} sm={12} xs={12}>
 						<ControlLabel>Filtrar cursos</ControlLabel>

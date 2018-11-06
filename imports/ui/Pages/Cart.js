@@ -12,7 +12,8 @@ class Cart extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			cardData: {},
+			currentCart: props.currentCart,
+			classes: props.classes,
 			selectedPaymentMethod: 'waiting'
 		};
 		this.payCart = this.payCart.bind(this);
@@ -64,20 +65,11 @@ class Cart extends Component {
 	}
 
 	payCart() {
-		const { currentCart } = this.state;
-		console.log(currentCart);
+		const { currentCart } = this.props;
 		const total = this.getTotal();
 		Meteor.call('payCart', { cartId: currentCart._id, total }, (err, protocolo) => {
 			if (!err) this.setState({ showSuccessPage: true, protocolo });
 		});
-	}
-
-	componentWillMount() {
-		const user = Meteor.user();
-		const { classes } = this.props;
-		let currentCart = this.props.currentCart;
-		console.log(currentCart, classes);
-		this.setState({ currentCart, classes });
 	}
 
 	handleLogin() {
@@ -88,7 +80,7 @@ class Cart extends Component {
 		});
 		Meteor.call('getUserCart', user._id, (err, cart) => {
 			this.setState({ isPayingCart: true, currentCart: cart }, () => {
-				localStorage.setItem('userCart', null);
+				localStorage.removeItem('userCart');
 			});
 		});
 	}
@@ -115,10 +107,19 @@ class Cart extends Component {
 
 	render() {
 		const user = Meteor.user();
-		const { currentCart, classes, selectedPaymentMethod } = this.state;
+		const { selectedPaymentMethod } = this.state;
+		let { currentCart, classes } = this.state;
+		const storageCart = localStorage.getItem('userCart');
+		console.log(storageCart);
+		console.log(this.props.currentCart);
+		console.log(storageCart === null, storageCart === 'null');
+		if (storageCart === null) {
+			currentCart = this.props.currentCart;
+			classes = this.props.classes;
+		}
 		console.log(currentCart);
+		console.log(classes);
 		if (classes.length === 0 || !currentCart) {
-			console.log('não tem nad');
 			return (
 				<div className="no-data-message">
 					<h1>Você não tem nenhum curso no carrinho</h1>
@@ -181,7 +182,19 @@ class Cart extends Component {
 					title={this.state.showSuccessPage ? 'Pagamento realizado com sucesso' : 'Forma de pagamento'}
 					showFooter={false}
 					showModal={this.state.isPayingCart || this.state.showSuccessPage}
-					closeModal={() => this.setState({ isPayingCart: false, selectedPaymentMethod: 'waiting' })}
+					closeModal={() =>
+						this.setState(
+							{
+								isPayingCart: false,
+								selectedPaymentMethod: null,
+								showLoginForm: false
+							},
+							() => {
+								if (this.state.showSuccessPage) {
+									window.location.pathname = '/meus-cursos';
+								}
+							}
+						)}
 				>
 					{' '}
 					{selectedPaymentMethod === 'waiting' && (

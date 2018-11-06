@@ -13,15 +13,17 @@ const dataLoader = (props, onData) => {
 			const currentCart = Carts.findOne();
 			console.log(currentCart);
 			if (currentCart) {
+				console.log('tem cart');
 				Meteor.call('getClassesFromCart', currentCart.classes, (err, classes) => {
 					console.log(classes);
 					onData(null, { currentCart, classes });
 				});
 			} else {
+				console.log('nao tem cart');
 				onData(null, { currentCart: null, classes: [] });
 			}
 		}
-	} else if (rootCart !== null) {
+	} else if (rootCart !== 'null' && rootCart !== null) {
 		Meteor.call('getClassesFromCart', rootCart.classes, (err, classes) => {
 			onData(null, { currentCart: rootCart, classes: classes || [] });
 		});
