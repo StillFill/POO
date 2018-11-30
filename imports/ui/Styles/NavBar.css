@@ -1,144 +1,176 @@
 .navbar-container {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-	padding: 15px 0;
-	height: 10%;
-	position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 15px 0;
+  height: 10%;
+  position: relative;
 }
 
 .navbar-container input {
-	width: 30em;
+  width: 30em;
 }
 
 .cart-button {
-	background-color: transparent;
-	border: 0;
-	border-radius: 5px;
-	border: 1px solid rgba(0, 0, 0, 0.1);
-	padding: 10px 20px;
-	margin-right: 15px;
+  background-color: transparent;
+  border: 0;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+  margin-right: 15px;
 }
 
 .cart-button:hover {
-	background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .login-button {
-	font-weight: 700;
-	background-color: white;
-	color: #e0e0e0;
-	border: 1px solid #e0e0e0;
-	border-radius: 5px;
-	font-size: 1.5em;
-	padding: 0.5em 1em;
-	height: 100%;
-	text-align: center;
+  font-weight: 700;
+  background-color: white;
+  color: #e0e0e0;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  font-size: 1.5em;
+  padding: 0.5em 1em;
+  height: 100%;
+  text-align: center;
 }
 
 .login-button:hover {
-	background-color: #e0e0e0;
-	color: white;
+  background-color: #e0e0e0;
+  color: white;
 }
 
 .register-button {
-	font-weight: 700;
-	border-radius: 5px;
-	background-color: #90caf9;
-	color: white;
-	border: 1px solid #90caf9;
-	font-size: 1.5em;
-	padding: 0.5em 2em;
-	height: 100%;
-	text-align: center;
-	margin-left: 15px;
+  font-weight: 700;
+  border-radius: 5px;
+  background-color: #90caf9;
+  color: white;
+  border: 1px solid #90caf9;
+  font-size: 1.5em;
+  padding: 0.5em 2em;
+  height: 100%;
+  text-align: center;
+  margin-left: 15px;
 }
 
 .user-buttons {
-	display: flex;
+  display: flex;
 }
 
 .logout-button {
-	margin-left: 1em;
-	padding: 0.3 2em;
-	background-color: transparent;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	font-size: 1.2em;
-	border-radius: 3px;
+  margin-left: 1em;
+  padding: 0.3 2em;
+  background-color: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  font-size: 1.2em;
+  border-radius: 3px;
 }
 
 .logout-button:hover {
-	background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .option-row {
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	padding: 0.5em;
-	cursor: pointer;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0.5em;
+  cursor: pointer;
 }
 
 .option-row:hover {
-	background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 .option-row div {
-	flex: 2;
+  flex: 2;
 }
 .option-row div:first-child {
-	padding-left: 0.2em;
-	flex: 1;
+  padding-left: 0.2em;
+  flex: 1;
 }
 .success-button {
-	background-color: #a5d6a7;
-	color: white;
-	border: 0;
-	border-radius: 3px;
-	font-size: 1.2em;
-	padding: 0.5rem 1rem;
-	cursor: pointer;
+  background-color: #5cb85c;
+  color: white;
+  border: 0;
+  border-radius: 3px;
+  font-size: 1.2em;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.success-button.rounded {
+  z-index: 1000;
+  background-color: #5cb85c;
+  color: white;
+  border: 0;
+  border-radius: 3px;
+  font-size: 1.2em;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  height: 65px;
+}
+
+.back-button.rounded {
+  z-index: 1000;
+  background-color: #aaaaaa;
+  font-weight: 700;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+  font-size: 1.2em;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 15px;
+  left: 15px;
+  height: 65px;
 }
 
 .cancel-button {
-	background-color: #ef5350;
-	color: white;
-	border: 0;
-	border-radius: 3px;
-	font-size: 1.2em;
-	padding: 0.5rem 1rem;
-	cursor: pointer;
+  background-color: #ef5350;
+  color: white;
+  border: 0;
+  border-radius: 3px;
+  font-size: 1.2em;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
 }
 
 .options-click {
-	background-color: transparent;
-	display: flex;
-	border: 1px solid rgba(0, 0, 0, 0.1);
-	padding: 0.5em;
-	font-size: 1.5em;
-	cursor: pointer;
-	transition: 100ms;
+  background-color: transparent;
+  display: flex;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 0.5em;
+  font-size: 1.5em;
+  cursor: pointer;
+  transition: 100ms;
 }
 
 .options-click:hover {
-	box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
 }
 
 .options-container {
-	z-index: 2;
-	width: 10em;
-	position: absolute;
-	background-color: white;
-	right: 0;
-	border: 1px solid rgba(0, 0, 0, 0.1);
+  z-index: 2;
+  width: 10em;
+  position: absolute;
+  background-color: white;
+  right: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .modal-title {
-	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 @media (min-width: 768px) {
-	.small-modal .modal-dialog {
-		width: 30%;
-	}
+  .small-modal .modal-dialog {
+    width: 30%;
+  }
 }

@@ -159,7 +159,8 @@ body {
 	width: 100%;
 	border-radius: 3px;
 	margin-top: 15px;
-	background-color: #b3e5fc;
+	color: #022231;
+	background-color: #90caf9;
 }
 
 @media (max-width: 768px) {

@@ -12,7 +12,6 @@ class Search extends Component {
   }
 
   render() {
-    console.log(window.location.pathname.split("/cursos/")[1]);
     return (
       <SearchContainer
         searchParam={window.location.pathname.split("/cursos/")[1]}

@@ -8,7 +8,6 @@ const dataLoader = (props, onData) => {
   Meteor.call("getAllClasses", (err, classes) => {
     if (!user) return onData(null, { cart: {}, classes });
     Meteor.call("getUserCart", user._id, (err, cart) => {
-      console.log(cart);
       onData(null, {
         ...props,
         cart,

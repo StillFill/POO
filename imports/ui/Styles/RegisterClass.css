@@ -7,6 +7,27 @@
   font-size: 1.2em;
 }
 
+.header-buttons {
+  display: flex;
+  flex: 5;
+}
+
+.add-lessons {
+  margin: 0 0 15px 15px;
+}
+
+.submit-class-button {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 15px 15px 15px;
+}
+
+.header-buttons button:first-child {
+  flex: 1;
+  background-color: white;
+  padding: 0 10px;
+}
+
 .classes-table-header span {
   flex: 1;
 }
@@ -51,4 +72,41 @@
 
 .new-class-button:hover {
   background-color: #388e3c;
+}
+
+
+.drop-down-title {
+  cursor: pointer;
+  border: 1px solid rgba(0,0,0,0.1);
+  background-color: white;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 5px 5px 0 0;
+}
+.add-lesson-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+.add-lesson-button button{
+  border: 0;
+  border-radius: 5px;
+  background-color: #5cb85c;
+  color: white;
+  padding: 10px 30px;
+}
+
+.no-video-label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-container {
+  padding: 15px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: 0;
+  border-radius: 0 0 5px 5px;
 }

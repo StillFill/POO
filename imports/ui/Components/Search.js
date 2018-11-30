@@ -18,7 +18,6 @@ class Search extends Component {
 
 	componentWillMount() {
 		const { classes, searchParam, cart } = this.props;
-		console.log(cart);
 		let filteredClasses = classes.filter(a => a.name.includes(searchParam));
 		if (!searchParam || searchParam === '') filteredClasses = classes;
 		this.setState({ filteredClasses });
