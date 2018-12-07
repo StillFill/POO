@@ -72,7 +72,7 @@ class Cart extends Component {
       "payCart",
       {
         cartId: currentCart._id,
-        total: this.getTotal(),
+        total,
         protocolo
       },
       err => {
@@ -101,7 +101,13 @@ class Cart extends Component {
       if (err) console.log(err);
       else {
         const a = window.open();
+        if (!a)
+          return Bert.alert(
+            "Navegador bloqueou a abertura do boleto",
+            "danger"
+          );
         a.document.write(result);
+        this.payCart();
       }
     });
   }
@@ -216,7 +222,7 @@ class Cart extends Component {
           }
         >
           {" "}
-          {selectedPaymentMethod === "waiting" && (
+          {selectedPaymentMethod === "waiting" && !this.state.showSuccessPage && (
             <div>
               <FormGroup>
                 <Radio
@@ -227,12 +233,12 @@ class Cart extends Component {
                 >
                   Cartão de crédito
                 </Radio>
-                {/* <Radio
+                <Radio
                   name="radioGroup"
                   onChange={() => this.setState({ checkBoxSelected: "boleto" })}
                 >
                   Boleto
-                </Radio> */}
+                </Radio>
               </FormGroup>
               <div className="flex-end">
                 <button
