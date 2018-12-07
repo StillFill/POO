@@ -20,6 +20,11 @@ if (Meteor.isServer) {
         });
     },
 
+    createCart(cart) {
+      Carts.remove({ user_id: cart.user_id, status: "open" });
+      return Carts.insert(cart);
+    },
+
     getUserCart(user_id) {
       return Carts.find({ user_id, status: "open" }).fetch()[0];
     },

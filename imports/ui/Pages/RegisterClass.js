@@ -82,7 +82,6 @@ class RegisterClass extends Component {
   }
 
   handleEditClass(selectedClass) {
-    console.log(selectedClass);
     this.setState({ selectedClass });
   }
 

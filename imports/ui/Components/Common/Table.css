@@ -32,10 +32,8 @@
 
 .table-row-cell {
 	padding: 10px;
-	white-space: nowrap;
 	width: 100%;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	word-break: break-all;
 	border-right: 1px solid rgba(0, 0, 0, 0.1);
 }
 

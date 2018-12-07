@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Bert } from "meteor/themeteorchef:bert";
 import { FormControl, ControlLabel, FormGroup } from "react-bootstrap";
 import "react-select/dist/react-select.css";
 import "../../Styles/Home";
 import "../../Styles/Class";
 import "../../Styles/RegisterClass";
 import Modal from "../../Components/Common/Modal";
+import { invalid } from "moment";
 
 class RegisterClass extends Component {
   constructor(props) {
@@ -21,6 +23,7 @@ class RegisterClass extends Component {
     this.submitSelectedForm = this.submitSelectedForm.bind(this);
     this.handleChangeImage = this.handleChangeImage.bind(this);
     this.getLabelByIdentifier = this.getLabelByIdentifier.bind(this);
+    this.validate = this.validate.bind(this);
   }
 
   getLabelByIdentifier(identifier) {
@@ -53,7 +56,6 @@ class RegisterClass extends Component {
       ...this.state.selectedClass,
       [name]: this.state.selectedClass[name]
     };
-    console.log(this.state.isEditingIdentifier, name);
     this.setState(
       {
         selectedClass: newClass,
@@ -72,8 +74,13 @@ class RegisterClass extends Component {
           onChange={this.handleChangeForm}
           value={this.state.selectedClass[identifier]}
           onKeyDown={this.submitSelectedForm}
+          onBlur={() =>
+            this.submitSelectedForm({
+              target: { name: identifier },
+              keyCode: 13
+            })
+          }
           type={identifier === "price" ? "number" : "text"}
-          maxLength={7}
           name={identifier}
           id={identifier}
         />
@@ -126,6 +133,27 @@ class RegisterClass extends Component {
       );
     }
   }
+
+  validate() {
+    const { selectedClass } = this.state;
+    let invalidFields = [];
+    Object.keys(selectedClass).map(key => {
+      if (!selectedClass[key] || selectedClass[key] === "") {
+        invalidFields.push(key);
+      }
+    });
+    if (invalidFields.length > 0) {
+      Bert.alert(
+        `Campos que faltam serem preenchidos: ${invalidFields.map(a =>
+          this.getLabelByIdentifier(a)
+        )}`,
+        "danger"
+      );
+    } else {
+      this.props.submitClass();
+    }
+  }
+
   render() {
     const { isEditing, backCallback, isRegister } = this.props;
     return (
@@ -176,7 +204,7 @@ class RegisterClass extends Component {
             >
               Adicionar aulas
             </button>
-            <button className="success-button" onClick={this.props.submitClass}>
+            <button className="success-button" onClick={this.validate}>
               {isEditing ? "Atualizar" : "Cadastrar"}
             </button>
           </div>

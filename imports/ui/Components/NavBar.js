@@ -29,7 +29,6 @@ class NavBar extends Component {
   render() {
     const user = Meteor.user();
 	const isMobile = screen.width <= 768;
-	console.log(user)
     return (
       <div className="navbar-container">
         <h2 style={{ cursor: "pointer" }} onClick={() => this.sendTo("/home")}>

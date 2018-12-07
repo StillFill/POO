@@ -1,10 +1,7 @@
 import React, { Component } from "react";
-import { Meteor } from "meteor/meteor";
 import { FormControl, ControlLabel } from "react-bootstrap";
-import { Bert } from "meteor/themeteorchef:bert";
-import { Accounts } from "meteor/accounts-base";
 import "../Styles/Login";
-import { Mongo } from "meteor/mongo";
+import { doLogin } from "../../modules/student-helpers";
 
 class Login extends Component {
   constructor(props) {
@@ -26,25 +23,13 @@ class Login extends Component {
   }
 
   login() {
-    Meteor.loginWithPassword(
-      this.state.login,
-      this.state.password,
-      (error, result) => {
-        if (error) {
-          Bert.alert("Login ou senha invalidos", "warning");
-        } else {
-          const user = Meteor.user();
-          Bert.alert(`Bem vindo ${user.username}`, "success");
-          if (user.type === "admin") {
-            window.location.pathname = "/cadastro-dono";
-          } else if (user.type === "caixa") {
-            window.location.pathname = "/vendas";
-          } else if (user.type === "dono") {
-            window.location.pathname = "/relatorio";
-          }
-        }
+    const { password, login } = this.state;
+    doLogin({ login, password }, err => {
+      if (!err) {
+        this.props.closeModal();
+        this.props.callback();
       }
-    );
+    });
   }
 
   render() {

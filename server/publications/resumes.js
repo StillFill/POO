@@ -25,4 +25,8 @@ if (Meteor.isServer) {
   Meteor.publish(null, function() {
     return Companies.find();
   });
+
+  Meteor.publish(null, () => {
+    return Carts.find({ user_id: this.userId, status: 'open' });
+  });
 }

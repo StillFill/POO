@@ -10,9 +10,11 @@ class Register extends Component {
     this.state = {};
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.displayError = this.displayError.bind(this);
   }
   handleSubmit() {
-    const { name, email, password, showRegisterModal } = this.state;
+    const { name, email, password, errorEmail } = this.state;
+    if (errorEmail) return this.displayError();
     Meteor.call(
       "createNewUser",
       {
@@ -35,10 +37,17 @@ class Register extends Component {
     );
   }
 
+  displayError() {
+    const { email } = this.state;
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    this.setState({ errorEmail: !re.test(String(email).toLowerCase()) });
+  }
+
   handleInputChange({ target: { value, name } }) {
     this.setState({ [name]: value });
   }
   render() {
+    const { errorEmail } = this.state;
     return (
       <Modal
         confirmationCallback={this.handleSubmit}
@@ -61,7 +70,9 @@ class Register extends Component {
             value={this.state.email}
             onChange={this.handleInputChange}
             name="email"
+            onBlur={this.displayError}
           />
+          {errorEmail && <p style={{ color: 'red' }}>Por favor insira um email valido!</p>}
         </div>
         <div style={{ marginTop: "1rem" }}>
           <ControlLabel>Senha</ControlLabel>

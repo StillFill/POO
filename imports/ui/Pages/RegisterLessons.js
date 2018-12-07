@@ -21,7 +21,6 @@ class RegisterLessons extends Component {
 
   componentWillMount() {
     const { selectedClass } = this.props;
-    console.log(selectedClass);
     this.setState({ selectedClass });
   }
 
@@ -79,7 +78,6 @@ class RegisterLessons extends Component {
   }
 
   render() {
-    console.log(this.props.selectedClass);
     const {
       selectedClassVideo,
       selectedClass,

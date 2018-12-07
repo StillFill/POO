@@ -55,7 +55,6 @@ class Cart extends Component {
 
   getTotal() {
     const { classes } = this.state;
-    console.log(classes);
     return classes.reduce((a, b) => a + Number(b.price), 0);
   }
 
@@ -69,7 +68,6 @@ class Cart extends Component {
       Math.random()
         .toString(36)
         .substring(2, 15);
-    console.log(currentCart);
     Meteor.call(
       "payCart",
       {
@@ -118,7 +116,6 @@ class Cart extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.classes);
     this.setState({ classes: this.props.classes });
   }
 
