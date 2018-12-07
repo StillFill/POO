@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Meteor } from 'meteor/meteor';
 import PropTypes from "prop-types";
 import {
   FormGroup,
@@ -18,14 +19,14 @@ import RegisterClassPage from "../Components/Common/RegisterClassPage";
 class RegisterClass extends Component {
   constructor(props) {
     super(props);
+    const user = Meteor.user();
     this.defaultClass = {
-      name: "Nome do curso...",
-      description: "Descrição...",
-      created_by: "Mauricio Gregorio",
-      detailed_description: "Descrição mais detalhada",
+      name: null,
+      description: null,
+      detailed_description: null,
       lessons: [{ name: "Aula 1", videoId: null }],
-      price: 300,
-      include_list: [{ icon: "fa fa-user", label: "Insira o texto" }]
+      price: null,
+      created_by: user.name,
     };
     this.state = {
       isEditing: false,

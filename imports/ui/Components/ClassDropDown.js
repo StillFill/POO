@@ -55,6 +55,7 @@ class RegisterClass extends Component {
               ) : (
                 <div
                   onClick={e => {
+                    if (!isRegister) return;
                     e.stopPropagation();
                     this.setState({ showForm: true });
                   }}
@@ -83,7 +84,8 @@ class RegisterClass extends Component {
 RegisterClass.propTypes = {
   classes: PropTypes.array,
   submitLessonName: PropTypes.func,
-  index: PropTypes.number
+  index: PropTypes.number,
+  isRegister: PropTypes.bool,
 };
 
 export default RegisterClass;

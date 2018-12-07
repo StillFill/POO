@@ -4,7 +4,8 @@ import RegisterClass from "../Pages/RegisterClass";
 import { Classes } from "../../api/classes/classes";
 
 const dataLoader = (props, onData) => {
-  if (Meteor.subscribe("getAllClasses").ready()) {
+  const user = Meteor.user();
+  if (user && Meteor.subscribe("getAllClasses").ready()) {
     const classes = Classes.find().fetch();
     onData(null, { classes });
   }

@@ -11,6 +11,7 @@ class Home extends Component {
     this.state = {};
     this.searchClass = this.searchClass.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   formatClassesToOptions() {
@@ -19,11 +20,17 @@ class Home extends Component {
   }
 
   searchClass() {
-    window.location.pathname = `/cursos/${this.state.className || ''}`;
+    const { searchedClass } = this.state;
+    window.location.pathname = `/cursos/${searchedClass || ""}`;
   }
 
   handleChange(e) {
-    this.setState({ className: e.target.value });
+    this.setState({ searchedClass: e.target.value });
+  }
+
+  handleKeyPress(e) {
+    if (e.key !== "Enter") return;
+    this.searchClass();
   }
 
   render() {
@@ -41,6 +48,7 @@ class Home extends Component {
                       borderRadius: "5px 0 0 5px",
                       height: "40px"
                     }}
+                    onKeyPress={this.handleKeyPress}
                     onChange={this.handleChange}
                     placeholder="Ache o curso que deseja"
                   />

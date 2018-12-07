@@ -1,20 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { FormControl, Col, Row } from "react-bootstrap";
-import Select from "react-select";
+import { FormControl, ControlLabel, FormGroup } from "react-bootstrap";
 import "react-select/dist/react-select.css";
 import "../../Styles/Home";
 import "../../Styles/Class";
 import "../../Styles/RegisterClass";
-import ClassCard from "../../Components/Common/ClassCard";
 import Modal from "../../Components/Common/Modal";
-import RegisterClassPage from "../../Components/Common/RegisterClassPage";
-import { iconOptions } from "../../../modules/register-helpers";
 
 class RegisterClass extends Component {
   constructor(props) {
     super(props);
-    console.log(props.selectedClass);
     this.state = {
       selectedToEdit: null,
       selectedClass: props.selectedClass,
@@ -25,6 +20,14 @@ class RegisterClass extends Component {
     this.handleChangeForm = this.handleChangeForm.bind(this);
     this.submitSelectedForm = this.submitSelectedForm.bind(this);
     this.handleChangeImage = this.handleChangeImage.bind(this);
+    this.getLabelByIdentifier = this.getLabelByIdentifier.bind(this);
+  }
+
+  getLabelByIdentifier(identifier) {
+    if (identifier === "name") return "Nome";
+    if (identifier === "description") return "Descrição";
+    if (identifier === "detailed_description") return "Detalhes";
+    if (identifier === "price") return "Preço";
   }
 
   componentDidMount() {
@@ -33,51 +36,49 @@ class RegisterClass extends Component {
   }
 
   handleChangeForm({ target: { value, name, id } }) {
-    this.setState({ changedValue: value });
+    const { selectedClass } = this.state;
+    selectedClass[name] = value;
+    this.setState({ isEditingIdentifier: name }, () =>
+      this.setState({ selectedClass })
+    );
   }
 
   focus(id) {
     document.getElementById(id).focus();
   }
 
-  submitSelectedForm({ key, keyCode }) {
-    if (keyCode === 13) {
-      console.log("UE");
-      const newClass = {
-        ...this.state.selectedClass,
-        [this.state.selectedToEdit]: this.state.changedValue
-      };
-      return this.setState(
-        {
-          selectedClass: newClass,
-          selectedToEdit: null
-        },
-        () => this.props.handleEditClass(this.state.selectedClass)
-      );
-    } else if (keyCode === 27) {
-      // esc
-      return this.setState({ selectedToEdit: null, changedValue: null });
-    }
+  submitSelectedForm({ target: { name }, keyCode }) {
+    if (keyCode !== 13) return; // if is not enter
+    const newClass = {
+      ...this.state.selectedClass,
+      [name]: this.state.selectedClass[name]
+    };
+    console.log(this.state.isEditingIdentifier, name);
+    this.setState(
+      {
+        selectedClass: newClass,
+        isEditingIdentifier: null
+      },
+      () => this.props.handleEditClass(newClass)
+    );
   }
 
   renderForm(identifier, fontSize, isTextpriceArea = false) {
     return (
-      <FormControl
-        style={{ width: "80%", fontSize }}
-        onChange={this.handleChangeForm}
-        value={this.state[identifier]}
-        onKeyDown={this.submitSelectedForm}
-        name={identifier}
-        id={identifier}
-      />
+      <FormGroup>
+        <ControlLabel>{this.getLabelByIdentifier(identifier)}</ControlLabel>
+        <FormControl
+          style={{ width: "80%", fontSize }}
+          onChange={this.handleChangeForm}
+          value={this.state.selectedClass[identifier]}
+          onKeyDown={this.submitSelectedForm}
+          type={identifier === "price" ? "number" : "text"}
+          maxLength={7}
+          name={identifier}
+          id={identifier}
+        />
+      </FormGroup>
     );
-  }
-
-  showForm(identifier) {
-    this.setState({ selectedToEdit: identifier });
-    setTimeout(() => {
-      this.focus(identifier);
-    }, 100);
   }
 
   handleChangeImage(e) {
@@ -89,19 +90,38 @@ class RegisterClass extends Component {
     });
   }
 
+  showForm(identifier) {
+    this.setState({ isEditingIdentifier: identifier }, () => {
+      setTimeout(() => {
+        this.focus(identifier);
+      }, 100);
+    });
+  }
+
   renderCondition(identifier, fontSize) {
     const { isRegister } = this.props;
+    const {
+      isEditingIdentifier,
+      selectedClass: { [identifier]: currentIdentifier }
+    } = this.state;
     if (!isRegister) return;
-    if (this.state.selectedToEdit === identifier) {
+    if (
+      !currentIdentifier ||
+      currentIdentifier === "" ||
+      isEditingIdentifier === identifier
+    ) {
       return this.renderForm(identifier, fontSize);
     } else {
       return (
-        <div
-          style={{ fontSize, wordWrap: "break-word" }}
-          onDoubleClick={() => this.showForm(identifier)}
-        >
+        <div style={{ fontSize, wordWrap: "break-word" }}>
           {identifier === "price" && "R$"}
           {this.state.selectedClass[identifier]}
+          <button className="edit-pencil-button" onCli>
+            <i
+              className="fa fa-pencil-alt"
+              onClick={() => this.showForm(identifier)}
+            />
+          </button>
         </div>
       );
     }

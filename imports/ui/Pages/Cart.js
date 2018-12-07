@@ -177,7 +177,7 @@ class Cart extends Component {
                 </div>
               ))}
             </Row>
-            <Row>
+            {/* <Row>
               <div className="discount-group">
                 <span>Cupom de desconto</span>
                 <FormControl
@@ -185,7 +185,7 @@ class Cart extends Component {
                   value={this.state.discountKey}
                 />
               </div>
-            </Row>
+            </Row> */}
             <Row>
               <h3 className="final-cart-total">TOTAL: R$ {this.getTotal()}</h3>
             </Row>
@@ -230,12 +230,12 @@ class Cart extends Component {
                 >
                   Cartão de crédito
                 </Radio>
-                <Radio
+                {/* <Radio
                   name="radioGroup"
                   onChange={() => this.setState({ checkBoxSelected: "boleto" })}
                 >
                   Boleto
-                </Radio>
+                </Radio> */}
               </FormGroup>
               <div className="flex-end">
                 <button

@@ -1,174 +1,164 @@
 body {
-	margin: 0;
+  margin: 0;
 }
 
 .principal-banner {
-	display: block;
-	position: relative;
-	height: 90vh;
-	background-image: url(https://kroton.vteximg.com.br/arquivos/181C_CD4680_engenharias_679x271px.jpg?v=636536995493770000);
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
+  display: block;
+  position: relative;
+  height: 90vh;
+  background-image: url(https://kroton.vteximg.com.br/arquivos/181C_CD4680_engenharias_679x271px.jpg?v=636536995493770000);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
 .class-card-body {
-	padding: 15px;
+  padding: 15px;
 }
 
 .header-banner-title {
-	width: 70%;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	color: white;
-	font-weight: 700;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+  width: 70%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .header-banner-title .Select {
-	width: 100%;
+  width: 100%;
 }
 
 .product-created-by {
-	opacity: 0.6;
+  opacity: 0.6;
 }
 
 .banner-form-button {
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .banner-form-button-shadow {
-	margin-top: 20px;
-	width: 100%;
-	background-color: rgba(0, 0, 0, 0.3);
-	border-radius: 5px;
-	padding: 10px;
+  margin-top: 20px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  padding: 10px;
 }
 
 .banner-form-button .search-button {
-	width: 10%;
-	height: 38px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background-color: greenyellow;
-	color: white;
-	font-size: 1.95em;
-	border: 0;
-	border-radius: 0 5px 5px 0;
+  width: 10%;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: greenyellow;
+  color: white;
+  font-size: 1.95em;
+  border: 0;
+  border-radius: 0 5px 5px 0;
 }
 
 .header-banner-title h1 {
-	text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.6);
-	text-align: center;
-	font-size: 4em;
+  text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.6);
+  text-align: center;
+  font-size: 4em;
 }
 
 .navigation-bar {
-	height: 10%;
-	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  height: 10%;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .home-container {
-	display: flex;
-	height: 90%;
+  display: flex;
+  height: 90%;
 }
 
 .product-row {
-	display: flex;
-	flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .class-card {
-	width: 100%;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	border-radius: 3px;
-	transition: 200ms;
-	position: relative;
-	font-size: 0.7em;
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  transition: 200ms;
+  position: relative;
+  font-size: 0.7em;
 }
 
 .fake-image {
-	height: 150px;
+  height: 150px;
 }
 
 .fake-image img {
-	width: 100%;
-	height: 100%;
-	background-color: #505763;
-	cursor: pointer;
-	position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #505763;
+  cursor: pointer;
+  position: relative;
 }
 
 .fake-image i {
-	position: absolute;
-	right: 10px;
-	top: 10px;
-	cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
 }
 
 .product-label {
-	font-family: Arial;
-	font-size: 2em;
-	font-weight: 700;
+  font-family: Arial;
+  font-size: 2em;
+  font-weight: 700;
 }
 
 .product-list {
-	margin: 15px;
-	max-height: 100%;
-	overflow: auto;
-	transition: 1s;
+  margin: 15px;
+  max-height: 100%;
+  overflow: auto;
+  transition: 1s;
 }
 
 .product-description {
-	white-space: nowrap;
-	width: 100%;
-	overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  overflow: hidden;
 
-	text-overflow: ellipsis;
-	font-size: 1.3em;
-	width: 80%;
+  text-overflow: ellipsis;
+  font-size: 1.3em;
+  width: 80%;
 }
 
 .class-card:hover {
-	box-shadow: 7px 7px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 7px 7px 10px rgba(0, 0, 0, 0.2);
 }
 
 .selected-class-container {
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.1);
-	position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 .full-list-button {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
-	padding: 0.5em;
-	border: 1px solid rgba(0, 0, 0, 0.1);
-	width: 100%;
-	border-radius: 3px;
-	margin-top: 15px;
-	color: #022231;
-	background-color: #90caf9;
-}
-
-@media (max-width: 768px) {
-	.fake-image {
-		height: 150px;
-		width: 100%;
-	}
-	.header-banner-title h1 {
-		font-size: 2em;
-	}
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0.5em;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  width: 100%;
+  border-radius: 3px;
+  margin-top: 15px;
+  color: #022231;
+  background-color: #90caf9;
 }

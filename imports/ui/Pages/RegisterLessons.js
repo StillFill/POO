@@ -97,6 +97,7 @@ class RegisterLessons extends Component {
             <ClassDropDown
               index={index}
               submitLessonName={this.submitLessonName}
+              isRegister={isRegister}
               title={name}
             >
               <div className="video-container">
